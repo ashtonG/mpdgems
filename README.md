@@ -1,8 +1,6 @@
 mpdutils
 ========
 
-![status](http://stillmaintained.com/AlexBio/mpdutils.png)
-
 **mpdutils** is a collection of some more or less useful MPD tools mostly
 intended to be used from the command line.
 

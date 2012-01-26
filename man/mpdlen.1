@@ -1,0 +1,40 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "MPDLEN" "1" "January 2012" "" ""
+.
+.SH "NAME"
+\fBmpdlen\fR \- print the total length of the current playlist
+.
+.SH "SYNOPSIS"
+\fBmpdlen [OPTIONS]\fR
+.
+.SH "DESCRIPTION"
+\fBmpdlen\fR is a simple utility that prints to \fBSTDOUT\fR the total length of the current playlist\. The output format is configurable\.
+.
+.SH "OPTIONS"
+\fB\-f, \-\-format\fR
+.
+.P
+\~\~\~\~\~\~ The output format string\. \fB%d\fR is replaced by the number of days, \fB%h\fR by the number of hours, \fB%m\fR by the number of minutes and \fB%s\fR by the number of seconds\. Example: \fB%d days, %h hours, %m mins and %s secs\fR
+.
+.P
+\fB\-a, \-\-addr\fR
+.
+.P
+\~\~\~\~\~\~ The MPD server address\.
+.
+.P
+\fB\-p, \-\-port\fR
+.
+.P
+\~\~\~\~\~\~ The MPD server port\.
+.
+.SH "AUTHOR"
+Alessandro Ghedini \fIal3xbio@gmail\.com\fR
+.
+.SH "COPYRIGHT"
+Copyright (C) 2012 Alessandro Ghedini \fIal3xbio@gmail\.com\fR
+.
+.P
+This program is released under the 3 clause BSD license\.

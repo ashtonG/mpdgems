@@ -7,7 +7,7 @@ mpdaddall(1) -- add __all__ the songs to the current playlist
 
 ## DESCRIPTION
 
-**mpdaddall** is a simple utility that adds all the songs in the MPD databse
+**mpdaddall** is a simple utility that adds all the songs in the MPD database
 to the current playlist.
 
 ## OPTIONS ##

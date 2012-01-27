@@ -27,6 +27,10 @@ ADD_EXECUTABLE(mpdaddall "src/mpdaddall.c")
 TARGET_LINK_LIBRARIES(mpdaddall ${MPC_LIBRARIES})
 SET_TARGET_PROPERTIES(mpdaddall PROPERTIES COMPILE_FLAGS "-Wall -pedantic")
 
+ADD_EXECUTABLE(mpdislast "src/mpdislast.c")
+TARGET_LINK_LIBRARIES(mpdislast ${MPC_LIBRARIES})
+SET_TARGET_PROPERTIES(mpdislast PROPERTIES COMPILE_FLAGS "-Wall -pedantic")
+
 ADD_EXECUTABLE(mpdlength "src/mpdlength.c")
 TARGET_LINK_LIBRARIES(mpdlength ${MPC_LIBRARIES})
 SET_TARGET_PROPERTIES(mpdlength PROPERTIES COMPILE_FLAGS "-Wall -pedantic")
@@ -45,6 +49,7 @@ SET_TARGET_PROPERTIES(mpdplayby PROPERTIES COMPILE_FLAGS "-Wall -pedantic")
 
 INSTALL(PROGRAMS
 	${CMAKE_CURRENT_BINARY_DIR}/mpdaddall
+	${CMAKE_CURRENT_BINARY_DIR}/mpdislast
 	${CMAKE_CURRENT_BINARY_DIR}/mpdlength
 	${CMAKE_CURRENT_BINARY_DIR}/mpdmmkeys
 	${CMAKE_CURRENT_BINARY_DIR}/mpdnotify
@@ -54,6 +59,7 @@ INSTALL(PROGRAMS
 
 INSTALL(FILES
 	${PROJECT_SOURCE_DIR}/man/mpdaddall.1
+	${PROJECT_SOURCE_DIR}/man/mpdislast.1
 	${PROJECT_SOURCE_DIR}/man/mpdlength.1
 	${PROJECT_SOURCE_DIR}/man/mpdmmkeys.1
 	${PROJECT_SOURCE_DIR}/man/mpdnotify.1

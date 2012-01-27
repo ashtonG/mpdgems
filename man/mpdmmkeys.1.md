@@ -1,0 +1,40 @@
+mpdmmkeys(1) -- control MPD playback via the X11 multimedia keys
+================================================================
+
+## SYNOPSIS
+
+`mpdmmkeys [OPTIONS]`
+
+## DESCRIPTION
+
+**mpdmmkeys** is a simple daemon that listens to multimedia keys events and
+controls MPD playback accordingly.
+
+Currently the following keys are grabbed:
+
+ * `XF86AudioPlay`
+ * `XF86AudioStop`
+ * `XF86AudioPrev`
+ * `XF86AudioNext`
+
+## OPTIONS ##
+
+`-a, --addr`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+The MPD server address.
+
+`-p, --port`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+The MPD server port.
+
+## AUTHOR ##
+
+Alessandro Ghedini <al3xbio@gmail.com>
+
+## COPYRIGHT ##
+
+Copyright (C) 2012 Alessandro Ghedini <al3xbio@gmail.com>
+
+This program is released under the 3 clause BSD license.

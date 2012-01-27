@@ -132,13 +132,12 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 
-	id = mpd_song_get_id(song);
+	if (song) {
+		id = mpd_song_get_id(song);
+		mpd_song_free(song);
 
-	mpd_song_free(song);
-
-	mpd_response_finish(mpd);
-
-	mpd_run_play_id(mpd, id);
+		mpd_run_play_id(mpd, id);
+	}
 
 	mpd_connection_free(mpd);
 

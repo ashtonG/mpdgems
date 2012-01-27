@@ -146,19 +146,21 @@ int main(int argc, char *argv[]) {
 
 		struct mpd_song *song = mpd_run_current_song(mpd);
 
-		unsigned int id = mpd_song_get_id(song);
-
 		if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
 			mpd_connection_free(mpd);
 			return -1;
 		}
 
-		if (id != last_seen) {
-			notify(n, song);
-			last_seen = id;
-		}
+		if (song != NULL) {
+			unsigned int id = mpd_song_get_id(song);
 
-		mpd_song_free(song);
+			if (id != last_seen) {
+				notify(n, song);
+				last_seen = id;
+			}
+
+			mpd_song_free(song);
+		}
 
 		mpd_run_idle_mask(mpd, MPD_IDLE_PLAYER);
 

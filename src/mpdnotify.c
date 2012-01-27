@@ -78,6 +78,7 @@ static void notify(NotifyNotification *n, struct mpd_song *song) {
 		if (!stat(cover, &sb) && S_ISREG(sb.st_mode)) {
 			GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file(cover, NULL);
 			notify_notification_set_image_from_pixbuf(n, pixbuf);
+			gdk_pixbuf_unref(pixbuf);
 		}
 	}
 

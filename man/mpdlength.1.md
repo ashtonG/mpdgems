@@ -1,14 +1,14 @@
-mpdlen(1) -- print the total length of the current playlist
-===========================================================
+mpdlength(1) -- print the total length of the current playlist
+==============================================================
 
 ## SYNOPSIS
 
-`mpdlen [OPTIONS]`
+`mpdlength [OPTIONS]`
 
 ## DESCRIPTION
 
-**mpdlen** is a simple utility that prints to `STDOUT` the total length of the
-current playlist. The output format is configurable.
+**mpdlength** is a simple utility that prints to `STDOUT` the total length of
+the current playlist. The output format is configurable.
 
 ## OPTIONS ##
 

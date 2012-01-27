@@ -49,7 +49,7 @@ static struct option long_opts[] = {
 static inline void help() {
 	#define CMD_HELP(CMDL, CMDS, MSG) printf("  %s, %s\t%s.\n", CMDS, CMDL, MSG);
 
-	puts("Usage: mpdlen [OPTIONS]\n");
+	puts("Usage: mpdlength [OPTIONS]\n");
 	puts(" Options:");
 
 	CMD_HELP("--format",	"-f",	"The output format string");

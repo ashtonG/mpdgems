@@ -132,6 +132,8 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 
+	mpd_response_finish(mpd);
+
 	if (song) {
 		id = mpd_song_get_id(song);
 		mpd_song_free(song);

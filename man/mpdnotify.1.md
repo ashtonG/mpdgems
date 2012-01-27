@@ -7,7 +7,7 @@ mpdnotify(1) -- stupid desktop notifier for MPD
 
 ## DESCRIPTION
 
-**mpdnotify** is a simple utility that polls the MPD server for song changes, and
+**mpdnotify** is a simple daemon that polls the MPD server for song changes, and
 shows a nice desktop notification when that happens.
 
 ## OPTIONS ##

@@ -2,13 +2,14 @@ mpdutils
 ========
 
 **mpdutils** is a collection of some more or less useful tools for MPD (the
-Music Player Daemon) mostly intended to be used from the command line.
+Music Player Daemon) intended to be used from the command line or in the background.
 
 The collection currently includes:
 
  * **mpdaddall** -- add __all__ the songs to the current playlist
  * **mpdlen** -- print the total length of the current playlist
  * **mpdnotify** -- stupid desktop notifier for MPD
+ * **mpdplayby** -- play a song that matches the given tags
 
 Have a look at the respective manpages for more information about them.
 

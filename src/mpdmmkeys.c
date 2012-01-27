@@ -49,14 +49,7 @@
 static inline void x11_grab_key(Display *dpy, Window root, const char *key_string) {
 	unsigned int keycode = XKeyStringToKeycode(key_string);
 
-	XGrabKey(dpy, keycode, 0, root, True, GrabModeAsync, GrabModeAsync);
-	XGrabKey(dpy, keycode, Mod2Mask, root, True, GrabModeAsync, GrabModeAsync);
-	XGrabKey(dpy, keycode, Mod5Mask, root, True, GrabModeAsync, GrabModeAsync);
-	XGrabKey(dpy, keycode, LockMask, root, True, GrabModeAsync, GrabModeAsync);
-	XGrabKey(dpy, keycode, Mod2Mask | Mod5Mask, root, True, GrabModeAsync, GrabModeAsync);
-	XGrabKey(dpy, keycode, Mod2Mask | LockMask, root, True, GrabModeAsync, GrabModeAsync);
-	XGrabKey(dpy, keycode, Mod5Mask | LockMask, root, True, GrabModeAsync, GrabModeAsync);
-	XGrabKey(dpy, keycode, Mod2Mask | Mod5Mask | LockMask, root, True, GrabModeAsync, GrabModeAsync);
+	XGrabKey(dpy, keycode, AnyModifier, root, True, GrabModeAsync, GrabModeAsync);
 }
 
 static inline void x11_handle_key(Display *dpy, XEvent ev, struct mpd_connection *mpd) {
@@ -64,6 +57,8 @@ static inline void x11_handle_key(Display *dpy, XEvent ev, struct mpd_connection
 	if (XEvEqKeyString(ev, "XF86AudioStop")) { mpd_run_stop(mpd);		return; }
 	if (XEvEqKeyString(ev, "XF86AudioPrev")) { mpd_run_previous(mpd);	return; }
 	if (XEvEqKeyString(ev, "XF86AudioNext")) { mpd_run_next(mpd);		return; }
+
+	XAllowEvents(dpy, AsyncKeyboard, ev.xkey.time);
 }
 
 static struct option long_opts[] = {

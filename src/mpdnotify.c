@@ -61,18 +61,17 @@ static void notify(NotifyNotification *n, struct mpd_song *song) {
 	size_t body_len = strlen("of ") + strlen(artist) + 1 +
 		strlen("from ") + strlen(album);
 
-	char *cover = NULL;
-	size_t cover_len = strlen(music_dir) + 1 +
-		strlen(dir) + 1 +
-		strlen(cover_file);
-
 	body = malloc(body_len + 1);
 	sprintf(body, "of %s\nfrom %s", artist, album);
 
 	notify_notification_close(n, NULL);
 
 	if (!nocover && music_dir) {
-		cover = malloc(cover_len + 1);
+		size_t cover_len = strlen(music_dir) + 1 +
+			strlen(dir) + 1 +
+			strlen(cover_file);
+
+		char *cover = malloc(cover_len + 1);
 		sprintf(cover, "%s/%s/%s", music_dir, dir, cover_file);
 
 		if (!stat(cover, &sb) && S_ISREG(sb.st_mode)) {
@@ -99,7 +98,7 @@ static struct option long_opts[] = {
 static inline void help() {
 	#define CMD_HELP(CMDL, CMDS, MSG) printf("  %s, %s\t%s.\n", CMDS, CMDL, MSG);
 
-	puts("Usage: mpdaddall [OPTIONS]\n");
+	puts("Usage: mpdnotify [OPTIONS]\n");
 	puts(" Options:");
 
 	CMD_HELP("--dir",	"-d",	"The \"root\" music directory");

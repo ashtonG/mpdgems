@@ -7,6 +7,7 @@ Music Player Daemon) intended to be used from the command line or in the backgro
 The collection currently includes:
 
  * **mpdaddall** -- add __all__ the songs to the current playlist
+ * **mpdircbot** -- control MPD playback through an IRC bot
  * **mpdislast** -- stop playback after the currently playing song
  * **mpdlength** -- print the total length of the current playlist
  * **mpdmmkeys** -- control MPD playback via the X11 multimedia keys
@@ -17,6 +18,7 @@ Have a look at the respective manpages for more information about them.
 
 ## DEPENDENCIES
 
+ * `libircclient` (only for `mpdircbot`)
  * `libmpdclient`
  * `libnotify` (only for `mpdnotify`)
  * `xlib` (only for `mpdmmkeys`)

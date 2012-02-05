@@ -18,10 +18,13 @@ Have a look at the respective manpages for more information about them.
 
 ## DEPENDENCIES
 
- * `libircclient` (only for `mpdircbot`)
+ * `libircclient` (optional, only for `mpdircbot`)
  * `libmpdclient`
- * `libnotify` (only for `mpdnotify`)
- * `xlib` (only for `mpdmmkeys`)
+ * `libnotify` (optional, only for `mpdnotify`)
+ * `libx11` (optional, only for `mpdmmkeys`)
+
+If one of the optional dependencies is not found, the relative executable will
+not get built.
 
 ## BUILDING
 

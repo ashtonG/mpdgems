@@ -46,6 +46,7 @@
 static inline void help();
 
 static inline void x11_grab_key(Display *dpy, Window root, const char *key_string);
+static inline void x11_ungrab_key(Display *dpy, Window root, const char *key_string);
 static inline void x11_handle_key(Display *dpy, XEvent ev, struct mpd_connection *mpd);
 
 int main(int argc, char *argv[]) {
@@ -82,21 +83,22 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 
-	x11_grab_key(dpy, root, "XF86AudioPlay");
-	x11_grab_key(dpy, root, "XF86AudioStop");
-	x11_grab_key(dpy, root, "XF86AudioPrev");
-	x11_grab_key(dpy, root, "XF86AudioNext");
-
-	/*
-	x11_grab_key("XF86AudioMute", dpy, root);
-	x11_grab_key("XF86AudioRaiseVolume", dpy, root);
-	x11_grab_key("XF86AudioLowerVolume", dpy, root);
-	*/
-
 	XSelectInput(dpy, root, KeyPressMask);
 
 	while (true) {
 		XEvent	ev;
+
+		x11_grab_key(dpy, root, "XF86AudioPlay");
+		x11_grab_key(dpy, root, "XF86AudioStop");
+		x11_grab_key(dpy, root, "XF86AudioPrev");
+		x11_grab_key(dpy, root, "XF86AudioNext");
+
+		/*
+		x11_grab_key("XF86AudioMute", dpy, root);
+		x11_grab_key("XF86AudioRaiseVolume", dpy, root);
+		x11_grab_key("XF86AudioLowerVolume", dpy, root);
+		*/
+
 		XNextEvent(dpy, &ev);
 
 		switch (ev.type) {
@@ -104,6 +106,17 @@ int main(int argc, char *argv[]) {
 				x11_handle_key(dpy, ev, mpd);
 				break;
 		}
+
+		x11_ungrab_key(dpy, root, "XF86AudioPlay");
+		x11_ungrab_key(dpy, root, "XF86AudioStop");
+		x11_ungrab_key(dpy, root, "XF86AudioPrev");
+		x11_ungrab_key(dpy, root, "XF86AudioNext");
+
+		/*
+		x11_ungrab_key("XF86AudioMute", dpy, root);
+		x11_ungrab_key("XF86AudioRaiseVolume", dpy, root);
+		x11_ungrab_key("XF86AudioLowerVolume", dpy, root);
+		*/
 	}
 
 	XCloseDisplay(dpy);
@@ -132,6 +145,12 @@ static inline void x11_grab_key(Display *dpy, Window root, const char *key_strin
 	unsigned int keycode = XKeyStringToKeycode(key_string);
 
 	XGrabKey(dpy, keycode, AnyModifier, root, True, GrabModeAsync, GrabModeAsync);
+}
+
+static inline void x11_ungrab_key(Display *dpy, Window root, const char *key_string) {
+	unsigned int keycode = XKeyStringToKeycode(key_string);
+
+	XUngrabKey(dpy, keycode, AnyModifier, root);
 }
 
 static inline void x11_handle_key(Display *dpy, XEvent ev, struct mpd_connection *mpd) {

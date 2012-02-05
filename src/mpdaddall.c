@@ -46,59 +46,24 @@ typedef struct NODE {
 	struct NODE *next;
 } list_node_t;
 
+static inline void help();
+
+static inline list_node_t *list_init();
+static inline list_node_t *list_head(list_node_t *l);
+static inline void list_insert_tail(list_node_t *l, void *item);
+
 #define list_foreach(ITEM, L) \
 	for (ITEM = list_head(L); ITEM != L; ITEM = ITEM -> next)
 
-static inline list_node_t *list_init() {
-	list_node_t *t = (list_node_t *) malloc(sizeof(list_node_t));
-
-	if (t == NULL)
-		return NULL;
-
-	t -> prev = t;
-	t -> next = t;
-
-	return t;
-}
-
-static inline list_node_t *list_head(list_node_t *l) {
-	return l -> next;
-}
-
-static inline void list_insert_tail(list_node_t *l, void *item) {
-	list_node_t *t = list_init();
-
-	t -> value = item;
-
-	t -> prev = l -> prev;
-	t -> next = l;
-	t -> prev -> next = t;
-
-	l -> prev = t;
-}
-
-static struct option long_opts[] = {
-	{ "addr",	required_argument,	0, 'a' },
-	{ "port",	required_argument,	0, 'p' },
-	{ "help",	no_argument,		0, 'h' },
-	{ 0,		0,			0,  0  }
-};
-
-static inline void help() {
-	#define CMD_HELP(CMDL, CMDS, MSG) printf("  %s, %s\t%s.\n", CMDS, CMDL, MSG);
-
-	puts("Usage: mpdaddall [OPTIONS]\n");
-	puts(" Options:");
-
-	CMD_HELP("--addr",	"-a",	"The MPD server address");
-	CMD_HELP("--port",	"-p",	"The MPD server port");
-	CMD_HELP("--help",	"-h",	"Show this help");
-
-	puts("");
-}
-
 int main(int argc, char *argv[]) {
 	int opts;
+
+	struct option long_opts[] = {
+		{ "addr",	required_argument,	0, 'a' },
+		{ "port",	required_argument,	0, 'p' },
+		{ "help",	no_argument,		0, 'h' },
+		{ 0,		0,			0,  0  }
+	};
 
 	struct mpd_song *song = NULL;
 	struct mpd_connection *mpd = NULL;
@@ -152,4 +117,45 @@ int main(int argc, char *argv[]) {
 	mpd_connection_free(mpd);
 
 	return 0;
+}
+
+static inline void help() {
+	#define CMD_HELP(CMDL, CMDS, MSG) printf("  %s, %s\t%s.\n", CMDS, CMDL, MSG);
+
+	puts("Usage: mpdaddall [OPTIONS]\n");
+	puts(" Options:");
+
+	CMD_HELP("--addr",	"-a",	"The MPD server address");
+	CMD_HELP("--port",	"-p",	"The MPD server port");
+	CMD_HELP("--help",	"-h",	"Show this help");
+
+	puts("");
+}
+
+static inline list_node_t *list_init() {
+	list_node_t *t = (list_node_t *) malloc(sizeof(list_node_t));
+
+	if (t == NULL)
+		return NULL;
+
+	t -> prev = t;
+	t -> next = t;
+
+	return t;
+}
+
+static inline list_node_t *list_head(list_node_t *l) {
+	return l -> next;
+}
+
+static inline void list_insert_tail(list_node_t *l, void *item) {
+	list_node_t *t = list_init();
+
+	t -> value = item;
+
+	t -> prev = l -> prev;
+	t -> next = l;
+	t -> prev -> next = t;
+
+	l -> prev = t;
 }

@@ -47,72 +47,21 @@ static char *music_dir  = NULL;
 static char *cover_file = "cover.jpg";
 static int   nocover    = 0;
 
-static void notify(NotifyNotification *n, struct mpd_song *song) {
-	struct stat sb;
-
-	const char *title  = mpd_song_get_tag(song, MPD_TAG_TITLE, 0);
-	const char *artist = mpd_song_get_tag(song, MPD_TAG_ARTIST, 0);
-	const char *album  = mpd_song_get_tag(song, MPD_TAG_ALBUM, 0);
-
-	const char *uri    = mpd_song_get_uri(song);
-	const char *dir    = dirname((char *) uri);
-
-	char *body = NULL;
-	size_t body_len = strlen("of ") + strlen(artist) + 1 +
-		strlen("from ") + strlen(album);
-
-	body = malloc(body_len + 1);
-	sprintf(body, "of %s\nfrom %s", artist, album);
-
-	notify_notification_close(n, NULL);
-
-	if (!nocover && music_dir) {
-		size_t cover_len = strlen(music_dir) + 1 +
-			strlen(dir) + 1 +
-			strlen(cover_file);
-
-		char *cover = malloc(cover_len + 1);
-		sprintf(cover, "%s/%s/%s", music_dir, dir, cover_file);
-
-		if (!stat(cover, &sb) && S_ISREG(sb.st_mode)) {
-			GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file(cover, NULL);
-			notify_notification_set_image_from_pixbuf(n, pixbuf);
-			gdk_pixbuf_unref(pixbuf);
-		}
-	}
-
-	notify_notification_update(n, title, body, "media-playback-start");
-	notify_notification_show(n, NULL);
-}
-
-static struct option long_opts[] = {
-	{ "dir",	required_argument,	0, 'd' },
-	{ "cover",	required_argument,	0, 'c' },
-	{ "nocover",	no_argument,		0, 'C' },
-	{ "addr",	required_argument,	0, 'a' },
-	{ "port",	required_argument,	0, 'p' },
-	{ "help",	no_argument,		0, 'h' },
-	{ 0,		0,			0,  0  }
-};
-
-static inline void help() {
-	#define CMD_HELP(CMDL, CMDS, MSG) printf("  %s, %s\t%s.\n", CMDS, CMDL, MSG);
-
-	puts("Usage: mpdnotify [OPTIONS]\n");
-	puts(" Options:");
-
-	CMD_HELP("--dir",	"-d",	"The \"root\" music directory");
-	CMD_HELP("--cover",	"-c",	"The cover file name (default 'cover.jpg')");
-	CMD_HELP("--nocover",	"-C",	"Do not use the album's cover image in the notifications");
-	CMD_HELP("--addr",	"-a",	"The MPD server address");
-	CMD_HELP("--port",	"-p",	"The MPD server port");
-	CMD_HELP("--help",	"-h",	"Show this help");
-
-	puts("");
-}
+static inline void help();
+static void notify(NotifyNotification *n, struct mpd_song *song);
 
 int main(int argc, char *argv[]) {
 	int opts;
+
+	struct option long_opts[] = {
+		{ "dir",	required_argument,	0, 'd' },
+		{ "cover",	required_argument,	0, 'c' },
+		{ "nocover",	no_argument,		0, 'C' },
+		{ "addr",	required_argument,	0, 'a' },
+		{ "port",	required_argument,	0, 'p' },
+		{ "help",	no_argument,		0, 'h' },
+		{ 0,		0,			0,  0  }
+	};
 
 	unsigned int last_seen = 0;
 	struct mpd_connection *mpd;
@@ -174,4 +123,58 @@ int main(int argc, char *argv[]) {
 	notify_uninit();
 
 	return 0;
+}
+
+static inline void help() {
+	#define CMD_HELP(CMDL, CMDS, MSG) printf("  %s, %s\t%s.\n", CMDS, CMDL, MSG);
+
+	puts("Usage: mpdnotify [OPTIONS]\n");
+	puts(" Options:");
+
+	CMD_HELP("--dir",	"-d",	"The \"root\" music directory");
+	CMD_HELP("--cover",	"-c",	"The cover file name (default 'cover.jpg')");
+	CMD_HELP("--nocover",	"-C",	"Do not use the album's cover image in the notifications");
+	CMD_HELP("--addr",	"-a",	"The MPD server address");
+	CMD_HELP("--port",	"-p",	"The MPD server port");
+	CMD_HELP("--help",	"-h",	"Show this help");
+
+	puts("");
+}
+
+static void notify(NotifyNotification *n, struct mpd_song *song) {
+	struct stat sb;
+
+	const char *title  = mpd_song_get_tag(song, MPD_TAG_TITLE, 0);
+	const char *artist = mpd_song_get_tag(song, MPD_TAG_ARTIST, 0);
+	const char *album  = mpd_song_get_tag(song, MPD_TAG_ALBUM, 0);
+
+	const char *uri    = mpd_song_get_uri(song);
+	const char *dir    = dirname((char *) uri);
+
+	char *body = NULL;
+	size_t body_len = strlen("of ") + strlen(artist) + 1 +
+		strlen("from ") + strlen(album);
+
+	body = malloc(body_len + 1);
+	sprintf(body, "of %s\nfrom %s", artist, album);
+
+	notify_notification_close(n, NULL);
+
+	if (!nocover && music_dir) {
+		size_t cover_len = strlen(music_dir) + 1 +
+			strlen(dir) + 1 +
+			strlen(cover_file);
+
+		char *cover = malloc(cover_len + 1);
+		sprintf(cover, "%s/%s/%s", music_dir, dir, cover_file);
+
+		if (!stat(cover, &sb) && S_ISREG(sb.st_mode)) {
+			GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file(cover, NULL);
+			notify_notification_set_image_from_pixbuf(n, pixbuf);
+			gdk_pixbuf_unref(pixbuf);
+		}
+	}
+
+	notify_notification_update(n, title, body, "media-playback-start");
+	notify_notification_show(n, NULL);
 }

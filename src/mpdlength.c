@@ -38,30 +38,18 @@
 #include <getopt.h>
 #include <mpd/client.h>
 
-static struct option long_opts[] = {
-	{ "format",	required_argument,	0, 'f' },
-	{ "addr",	required_argument,	0, 'a' },
-	{ "port",	required_argument,	0, 'p' },
-	{ "help",	no_argument,		0, 'h' },
-	{ 0,		0,			0,  0  }
-};
-
-static inline void help() {
-	#define CMD_HELP(CMDL, CMDS, MSG) printf("  %s, %s\t%s.\n", CMDS, CMDL, MSG);
-
-	puts("Usage: mpdlength [OPTIONS]\n");
-	puts(" Options:");
-
-	CMD_HELP("--format",	"-f",	"The output format string");
-	CMD_HELP("--addr",	"-a",	"The MPD server address");
-	CMD_HELP("--port",	"-p",	"The MPD server port");
-	CMD_HELP("--help",	"-h",	"Show this help");
-
-	puts("");
-}
+static inline void help();
 
 int main(int argc, char *argv[]) {
 	int opts;
+
+	struct option long_opts[] = {
+		{ "format",	required_argument,	0, 'f' },
+		{ "addr",	required_argument,	0, 'a' },
+		{ "port",	required_argument,	0, 'p' },
+		{ "help",	no_argument,		0, 'h' },
+		{ 0,		0,			0,  0  }
+	};
 
 	unsigned int tot = 0;
 	struct mpd_song *song = NULL;
@@ -141,4 +129,18 @@ int main(int argc, char *argv[]) {
 	}
 
 	return 0;
+}
+
+static inline void help() {
+	#define CMD_HELP(CMDL, CMDS, MSG) printf("  %s, %s\t%s.\n", CMDS, CMDL, MSG);
+
+	puts("Usage: mpdlength [OPTIONS]\n");
+	puts(" Options:");
+
+	CMD_HELP("--format",	"-f",	"The output format string");
+	CMD_HELP("--addr",	"-a",	"The MPD server address");
+	CMD_HELP("--port",	"-p",	"The MPD server port");
+	CMD_HELP("--help",	"-h",	"Show this help");
+
+	puts("");
 }

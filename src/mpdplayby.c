@@ -38,32 +38,19 @@
 #include <getopt.h>
 #include <mpd/client.h>
 
-static struct option long_opts[] = {
-	{ "title",	required_argument,	0, 't' },
-	{ "addr",	required_argument,	0, 'a' },
-	{ "port",	required_argument,	0, 'p' },
-	{ "help",	no_argument,		0, 'h' },
-	{ 0,		0,			0,  0  }
-};
-
-static inline void help() {
-	#define CMD_HELP(CMDL, CMDS, MSG) printf("  %s, %s\t%s.\n", CMDS, CMDL, MSG);
-
-	puts("Usage: mpdplayby [OPTIONS]\n");
-	puts(" Options:");
-
-	CMD_HELP("--title",	"-t",	"Match song titles");
-	CMD_HELP("--artist",	"-r",	"Match song artists");
-	CMD_HELP("--album",	"-b",	"Match song albums");
-	CMD_HELP("--addr",	"-a",	"The MPD server address");
-	CMD_HELP("--port",	"-p",	"The MPD server port");
-	CMD_HELP("--help",	"-h",	"Show this help");
-
-	puts("");
-}
+static inline void help();
 
 int main(int argc, char *argv[]) {
 	int opts;
+
+	struct option long_opts[] = {
+		{ "title",	required_argument,	0, 't' },
+		{ "addr",	required_argument,	0, 'a' },
+		{ "port",	required_argument,	0, 'p' },
+		{ "help",	no_argument,		0, 'h' },
+		{ 0,		0,			0,  0  }
+	};
+
 	unsigned int id = 0;
 
 	struct mpd_song *song = NULL;
@@ -144,4 +131,20 @@ int main(int argc, char *argv[]) {
 	mpd_connection_free(mpd);
 
 	return 0;
+}
+
+static inline void help() {
+	#define CMD_HELP(CMDL, CMDS, MSG) printf("  %s, %s\t%s.\n", CMDS, CMDL, MSG);
+
+	puts("Usage: mpdplayby [OPTIONS]\n");
+	puts(" Options:");
+
+	CMD_HELP("--title",	"-t",	"Match song titles");
+	CMD_HELP("--artist",	"-r",	"Match song artists");
+	CMD_HELP("--album",	"-b",	"Match song albums");
+	CMD_HELP("--addr",	"-a",	"The MPD server address");
+	CMD_HELP("--port",	"-p",	"The MPD server port");
+	CMD_HELP("--help",	"-h",	"Show this help");
+
+	puts("");
 }

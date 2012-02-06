@@ -71,7 +71,10 @@ int main(int argc, char *argv[]) {
 	char *irc_nick = "mpdircbot";
 
 	irc_session_t *irc = NULL;
-	irc_callbacks_t cbs;
+	irc_callbacks_t cbs = {
+		.event_connect = connect_cb,
+		.event_privmsg = privmsg_cb,
+	};
 
 	while ((opts = getopt_long(argc, argv, "a:p:A:P:N:h", long_opts, 0)) != -1) {
 		switch (opts) {
@@ -89,9 +92,6 @@ int main(int argc, char *argv[]) {
 		if (mpd != NULL) mpd_connection_free(mpd);
 		mpd = mpd_connection_new(mpd_addr, mpd_port, 30000);
 	} while (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS);
-
-	cbs.event_connect = connect_cb;
-	cbs.event_privmsg = privmsg_cb;
 
 	irc = irc_create_session(&cbs);
 

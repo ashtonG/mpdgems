@@ -97,6 +97,7 @@ int main(int argc, char *argv[]) {
 
 	irc_connect(irc, irc_addr, irc_port, NULL, irc_nick, NULL, NULL);
 
+	puts("Connecting to the IRC server...");
 	irc_run(irc);
 
 	return 0;

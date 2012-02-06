@@ -119,7 +119,7 @@ static inline void help() {
 }
 
 static void connect_cb(IRC_CB_PARAMS) {
-	puts("Now connected, what are your order, sir?");
+	puts("Now connected, what are your orders, sir?");
 }
 
 static void privmsg_cb(IRC_CB_PARAMS) {

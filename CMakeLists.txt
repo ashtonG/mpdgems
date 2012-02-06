@@ -1,9 +1,9 @@
-# mpdutils CMakeLists.txt
+# mpdgems CMakeLists.txt
 # Copyright (C) 2012 Alessandro Ghedini <al3xbio@gmail.com>
 # This file is released under the 3 clause BSD license, see COPYING
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
-PROJECT(mpdutils C)
+PROJECT(mpdgems C)
 
 SET(VERSION_MAJOR 0)
 SET(VERSION_MINOR 1)

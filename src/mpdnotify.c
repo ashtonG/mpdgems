@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
 	};
 
 	unsigned int last_seen = 0;
-	struct mpd_connection *mpd;
+	struct mpd_connection *mpd = NULL;
 
 	char *mpd_addr = NULL;
 	int   mpd_port = 0;
@@ -81,12 +81,10 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	mpd = mpd_connection_new(mpd_addr, mpd_port, 30000);
-
-	if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-		mpd_connection_free(mpd);
-		return -1;
-	}
+	do {
+		if (mpd != NULL) mpd_connection_free(mpd);
+		mpd = mpd_connection_new(mpd_addr, mpd_port, 30000);
+	} while (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS);
 
 	notify_init("mpdnotify");
 

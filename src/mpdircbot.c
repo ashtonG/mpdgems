@@ -85,12 +85,10 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	mpd = mpd_connection_new(mpd_addr, mpd_port, 30000);
-
-	if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-		mpd_connection_free(mpd);
-		return -1;
-	}
+	do {
+		if (mpd != NULL) mpd_connection_free(mpd);
+		mpd = mpd_connection_new(mpd_addr, mpd_port, 30000);
+	} while (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS);
 
 	cbs.event_connect = connect_cb;
 	cbs.event_privmsg = privmsg_cb;

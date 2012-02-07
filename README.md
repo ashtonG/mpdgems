@@ -11,6 +11,7 @@ The collection currently includes:
  * **mpdislast** -- stop playback after the currently playing song
  * **mpdlength** -- print the total length of the current playlist
  * **mpdmmkeys** -- control MPD playback via the X11 multimedia keys
+ * **mpdnextby** -- play next, a song that matches the given tags
  * **mpdnotify** -- stupid desktop notifier for MPD
  * **mpdplayby** -- play a song that matches the given tags
 

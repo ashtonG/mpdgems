@@ -10,7 +10,7 @@
 \fBmpdircbot [OPTIONS]\fR
 .
 .SH "DESCRIPTION"
-\fBmpdircbot\fR is a simple IRC bot that listens to private messages and controls the MPD playback accordingly\.
+\fBmpdircbot\fR is a simple IRC bot that listens to private and channel messages and controls the MPD playback accordingly\.
 .
 .P
 It recognizes the following commands:
@@ -34,6 +34,9 @@ It recognizes the following commands:
 \fBnext\fR
 .
 .IP "" 0
+.
+.P
+If invited in a channel, \fBmpdircbot\fR will join it and respond to commands set trough the channel itself, so that everyone in the channel can control the MPD playback\.
 .
 .SH "OPTIONS"
 \fB\-a, \-\-addr\fR

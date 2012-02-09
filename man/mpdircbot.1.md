@@ -7,8 +7,8 @@ mpdircbot(1) -- control MPD playback through an IRC bot
 
 ## DESCRIPTION
 
-**mpdircbot** is a simple IRC bot that listens to private messages and controls
-the MPD playback accordingly.
+**mpdircbot** is a simple IRC bot that listens to private and channel 
+messages and controls the MPD playback accordingly.
 
 It recognizes the following commands:
 
@@ -18,6 +18,10 @@ It recognizes the following commands:
  * `stop`
  * `prev`
  * `next`
+
+If invited in a channel, **mpdircbot** will join it and respond to commands
+set trough the channel itself, so that everyone in the channel can control
+the MPD playback.
 
 ## OPTIONS ##
 

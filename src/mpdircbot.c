@@ -44,11 +44,15 @@ static struct mpd_connection *mpd = NULL;
 
 static inline void help();
 
+static void run_mpd_cmd(irc_session_t *irc, const char *cmd, const char *orig);
+
 #define IRC_CB_PARAMS irc_session_t *irc, const char *ev, \
 	const char *orig, const char **params, unsigned int count
 
 static void connect_cb(IRC_CB_PARAMS);
 static void privmsg_cb(IRC_CB_PARAMS);
+static void invited_cb(IRC_CB_PARAMS);
+static void channel_cb(IRC_CB_PARAMS);
 
 int main(int argc, char *argv[]) {
 	int opts;
@@ -74,6 +78,8 @@ int main(int argc, char *argv[]) {
 	irc_callbacks_t cbs = {
 		.event_connect = connect_cb,
 		.event_privmsg = privmsg_cb,
+		.event_invite  = invited_cb,
+		.event_channel = channel_cb,
 	};
 
 	while ((opts = getopt_long(argc, argv, "a:p:A:P:N:h", long_opts, 0)) != -1) {
@@ -121,48 +127,60 @@ static inline void help() {
 	puts("");
 }
 
-static void connect_cb(IRC_CB_PARAMS) {
-	puts("Now connected, what are your orders, sir?");
-}
-
-static void privmsg_cb(IRC_CB_PARAMS) {
-	if (!strncmp("play", params[1], 4)) {
+static void run_mpd_cmd(irc_session_t *irc, const char *cmd, const char *orig) {
+	if (!strncmp("play", cmd, 4)) {
 		mpd_run_play(mpd);
 		irc_cmd_me(irc, orig, "started playback");
 		return;
 	}
 
-	if (!strncmp("pause", params[1], 5)) {
+	if (!strncmp("pause", cmd, 5)) {
 		mpd_run_pause(mpd, 1);
 		irc_cmd_me(irc, orig, "paused playback");
 		return;
 	}
 
-	if (!strncmp("toggle", params[1], 6)) {
+	if (!strncmp("toggle", cmd, 6)) {
 		mpd_run_toggle_pause(mpd);
 		irc_cmd_me(irc, orig, "toggled playback");
 		return;
 	}
 
-	if (!strncmp("stop", params[1], 4)) {
+	if (!strncmp("stop", cmd, 4)) {
 		mpd_run_stop(mpd);
 		irc_cmd_me(irc, orig, "paused playback");
 		return;
 	}
 
-	if (!strncmp("prev", params[1], 4)) {
+	if (!strncmp("prev", cmd, 4)) {
 		mpd_run_previous(mpd);
-		irc_cmd_me(irc, orig, "skipped to the next song");
-		return;
-	}
-
-	if (!strncmp("next", params[1], 4)) {
-		mpd_run_next(mpd);
 		irc_cmd_me(irc, orig, "skipped to the previous song");
 		return;
 	}
 
-	/*if (!strncmp("quit", params[1], 4)) {
+	if (!strncmp("next", cmd, 4)) {
+		mpd_run_next(mpd);
+		irc_cmd_me(irc, orig, "skipped to the next song");
+		return;
+	}
+
+	/*if (!strncmp("quit", cmd, 4)) {
 		irc_destroy_session(irc);
 	}*/
+}
+
+static void connect_cb(IRC_CB_PARAMS) {
+	puts("Now connected, what are your orders, sir?");
+}
+
+static void privmsg_cb(IRC_CB_PARAMS) {
+	run_mpd_cmd(irc, params[1], orig);
+}
+
+static void invited_cb(IRC_CB_PARAMS) {
+	irc_cmd_join(irc, params[1], NULL);
+}
+
+static void channel_cb(IRC_CB_PARAMS) {
+	run_mpd_cmd(irc, params[1], params[0]);
 }

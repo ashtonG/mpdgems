@@ -95,6 +95,8 @@ int main(int argc, char *argv[]) {
 
 	irc = irc_create_session(&cbs);
 
+	irc_option_set(irc, LIBIRC_OPTION_STRIPNICKS);
+
 	irc_connect(irc, irc_addr, irc_port, NULL, irc_nick, NULL, NULL);
 
 	puts("Connecting to the IRC server...");
@@ -126,31 +128,37 @@ static void connect_cb(IRC_CB_PARAMS) {
 static void privmsg_cb(IRC_CB_PARAMS) {
 	if (!strncmp("play", params[1], 4)) {
 		mpd_run_play(mpd);
+		irc_cmd_me(irc, orig, "started playback");
 		return;
 	}
 
 	if (!strncmp("pause", params[1], 5)) {
 		mpd_run_pause(mpd, 1);
+		irc_cmd_me(irc, orig, "paused playback");
 		return;
 	}
 
 	if (!strncmp("toggle", params[1], 6)) {
 		mpd_run_toggle_pause(mpd);
+		irc_cmd_me(irc, orig, "toggled playback");
 		return;
 	}
 
 	if (!strncmp("stop", params[1], 4)) {
 		mpd_run_stop(mpd);
+		irc_cmd_me(irc, orig, "paused playback");
 		return;
 	}
 
 	if (!strncmp("prev", params[1], 4)) {
 		mpd_run_previous(mpd);
+		irc_cmd_me(irc, orig, "skipped to the next song");
 		return;
 	}
 
 	if (!strncmp("next", params[1], 4)) {
 		mpd_run_next(mpd);
+		irc_cmd_me(irc, orig, "skipped to the previous song");
 		return;
 	}
 

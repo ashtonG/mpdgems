@@ -20,7 +20,7 @@ It recognizes the following commands:
  * `next`
 
 If invited in a channel, **mpdircbot** will join it and respond to commands
-set trough the channel itself, so that everyone in the channel can control
+sent trough the channel itself, so that everyone in the channel can control
 the MPD playback.
 
 ## OPTIONS ##

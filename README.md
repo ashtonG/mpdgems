@@ -14,6 +14,7 @@ The collection currently includes:
  * **mpdnextby** -- play next, a song that matches the given tags
  * **mpdnotify** -- stupid desktop notifier for MPD
  * **mpdplayby** -- play a song that matches the given tags
+ * **mpdfindby** -- find and print matching songs
 
 Have a look at the respective manpages for more information about them.
 

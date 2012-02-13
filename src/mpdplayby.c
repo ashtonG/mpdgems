@@ -45,6 +45,8 @@ int main(int argc, char *argv[]) {
 
 	struct option long_opts[] = {
 		{ "title",	required_argument,	0, 't' },
+		{ "artist",	required_argument,	0, 'r' },
+		{ "album",	required_argument,	0, 'b' },
 		{ "addr",	required_argument,	0, 'a' },
 		{ "port",	required_argument,	0, 'p' },
 		{ "help",	no_argument,		0, 'h' },

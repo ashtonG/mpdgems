@@ -7,6 +7,7 @@ Music Player Daemon) intended to be used from the command line or in the backgro
 The collection currently includes:
 
  * **mpdaddall** -- add __all__ the songs to the current playlist
+ * **mpdfindby** -- find and print matching songs
  * **mpdircbot** -- control MPD playback through an IRC bot
  * **mpdislast** -- stop playback after the currently playing song
  * **mpdlength** -- print the total length of the current playlist
@@ -14,7 +15,6 @@ The collection currently includes:
  * **mpdnextby** -- play next, a song that matches the given tags
  * **mpdnotify** -- stupid desktop notifier for MPD
  * **mpdplayby** -- play a song that matches the given tags
- * **mpdfindby** -- find and print matching songs
 
 Have a look at the respective manpages for more information about them.
 

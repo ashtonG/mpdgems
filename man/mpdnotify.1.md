@@ -42,6 +42,18 @@ The MPD server port.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Show the help message.
 
+## ENVIRONMENT ##
+
+`MPD_HOST`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+The MPD server address (overridden by `--addr`).
+
+`MPD_PORT`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+The MPD server port (overridden by `--port`).
+
 ## AUTHOR ##
 
 Alessandro Ghedini <al3xbio@gmail.com>

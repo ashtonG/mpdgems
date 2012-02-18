@@ -59,8 +59,8 @@ int main(int argc, char *argv[]) {
 	struct mpd_song *song = NULL;
 	struct mpd_connection *mpd = NULL;
 
-	char *mpd_addr = NULL;
-	int   mpd_port = 0;
+	char *mpd_addr = getenv("MPD_HOST");
+	int   mpd_port = getenv("MPD_PORT") ? atoi(getenv("MPD_PORT")) : 0;
 
 	char *title  = NULL;
 	char *artist = NULL;

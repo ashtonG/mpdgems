@@ -70,8 +70,8 @@ int main(int argc, char *argv[]) {
 
 	list_node_t *songs_list = list_init(), *iter;
 
-	char *mpd_addr = NULL;
-	int   mpd_port = 0;
+	char *mpd_addr = getenv("MPD_HOST");
+	int   mpd_port = getenv("MPD_PORT") ? atoi(getenv("MPD_PORT")) : 0;
 
 	while ((opts = getopt_long(argc, argv, "a:p:h", long_opts, 0)) != -1) {
 		switch (opts) {

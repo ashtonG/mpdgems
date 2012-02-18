@@ -34,9 +34,9 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <getopt.h>
-
 #include <mpd/client.h>
 #include <libircclient/libircclient.h>
 
@@ -67,8 +67,8 @@ int main(int argc, char *argv[]) {
 		{ 0,		0,			0,  0  }
 	};
 
-	char *mpd_addr = NULL;
-	int   mpd_port = 0;
+	char *mpd_addr = getenv("MPD_HOST");
+	int   mpd_port = getenv("MPD_PORT") ? atoi(getenv("MPD_PORT")) : 0;
 
 	char *irc_addr = "irc.freenode.net";
 	int   irc_port = 6667;

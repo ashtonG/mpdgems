@@ -55,8 +55,8 @@ int main(int argc, char *argv[]) {
 	struct mpd_song *song;
 	struct mpd_connection *mpd;
 
-	char *mpd_addr = NULL;
-	int   mpd_port = 0;
+	char *mpd_addr = getenv("MPD_HOST");
+	int   mpd_port = getenv("MPD_PORT") ? atoi(getenv("MPD_PORT")) : 0;
 
 	while ((opts = getopt_long(argc, argv, "a:p:h", long_opts, 0)) != -1) {
 		switch (opts) {

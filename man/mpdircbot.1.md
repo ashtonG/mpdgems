@@ -7,7 +7,7 @@ mpdircbot(1) -- control MPD playback through an IRC bot
 
 ## DESCRIPTION
 
-**mpdircbot** is a simple IRC bot that listens to private and channel 
+**mpdircbot** is a simple IRC bot that listens to private and channel
 messages and controls the MPD playback accordingly.
 
 It recognizes the following commands:
@@ -49,6 +49,18 @@ The IRC server port (default `6667`).
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 The IRC nick for the bot (default `mpdircbot`).
+
+## ENVIRONMENT ##
+
+`MPD_HOST`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+The MPD server address (overridden by `--addr`).
+
+`MPD_PORT`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+The MPD server port (overridden by `--port`).
 
 ## AUTHOR ##
 

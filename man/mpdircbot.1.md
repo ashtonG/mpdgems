@@ -50,6 +50,11 @@ The IRC server port (default `6667`).
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 The IRC nick for the bot (default `mpdircbot`).
 
+`-h, --help`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Show the help message.
+
 ## ENVIRONMENT ##
 
 `MPD_HOST`

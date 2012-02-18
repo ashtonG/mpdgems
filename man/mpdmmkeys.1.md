@@ -29,6 +29,11 @@ The MPD server address.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 The MPD server port.
 
+`-h, --help`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Show the help message.
+
 ## ENVIRONMENT ##
 
 `MPD_HOST`

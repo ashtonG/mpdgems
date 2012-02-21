@@ -150,11 +150,20 @@ static void notify(NotifyNotification *n, struct mpd_song *song) {
 	const char *dir    = dirname((char *) uri);
 
 	char *body = NULL;
-	size_t body_len = strlen("of ") + strlen(artist) + 1 +
-		strlen("from ") + strlen(album);
+	size_t body_len = 0;
+
+	if (artist)
+		body_len += strlen("of ") + strlen(artist) + 1;
+
+	if (album)
+		body_len += strlen("from ") + strlen(album);
 
 	body = malloc(body_len + 1);
-	sprintf(body, "of %s\nfrom %s", artist, album);
+
+	if (body_len)
+		sprintf(body, "of %s\nfrom %s", artist, album);
+	else
+		sprintf(body, "");
 
 	notify_notification_close(n, NULL);
 

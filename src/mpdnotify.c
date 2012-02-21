@@ -158,12 +158,18 @@ static void notify(NotifyNotification *n, struct mpd_song *song) {
 	if (album)
 		body_len += strlen("from ") + strlen(album);
 
-	body = malloc(body_len + 1);
+	body = calloc(body_len + 1, 1);
 
-	if (body_len)
-		sprintf(body, "of %s\nfrom %s", artist, album);
-	else
-		sprintf(body, "");
+	if (artist) {
+		body = strcat(body, "of ");
+		body = strcat(body, artist);
+		body = strcat(body, "\n");
+	}
+
+	if (album) {
+		body = strcat(body, "from ");
+		body = strcat(body, album);
+	}
 
 	notify_notification_close(n, NULL);
 

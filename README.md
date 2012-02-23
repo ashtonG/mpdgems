@@ -33,8 +33,8 @@ not get built.
 mpdgems is distributed as source code. Install with:
 
 ~~~~
-$ git clone git://github.com/AlexBio/mpdgems.git && cd mpdgems
-$ cmake .
+$ mkdir build && cd build
+$ cmake ..
 $ make
 # make install
 ~~~~

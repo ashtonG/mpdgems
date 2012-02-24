@@ -1,5 +1,5 @@
 /*
- * Collection of more or less useful MPD tools.
+ * Collection of more or less useful tools for the Music Player Daemon.
  *
  * Copyright (c) 2012, Alessandro Ghedini
  * All rights reserved.

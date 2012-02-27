@@ -29,6 +29,11 @@ The MPD server address.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 The MPD server port.
 
+`-s, --secret`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+The MPD password.
+
 `-h, --help`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

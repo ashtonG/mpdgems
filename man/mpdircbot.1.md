@@ -21,7 +21,13 @@ It recognizes the following commands:
 
 If invited in a channel, **mpdircbot** will join it and respond to commands
 sent trough the channel itself, so that everyone in the channel can control
-the MPD playback.
+the MPD playback. To accept commands from a channel the mpdircbot nick has to
+be prepended to the command itself, e.g.:
+
+ * `mpdircbot, play`
+ * `mpdircbot, pause`
+ * `mpdircbot, toggle`
+ * ...
 
 ## OPTIONS ##
 
@@ -34,6 +40,11 @@ The MPD server address.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 The MPD server port.
+
+`-s, --secret`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+The MPD password.
 
 `-A, --irc-addr`
 

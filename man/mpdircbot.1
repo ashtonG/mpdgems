@@ -36,7 +36,21 @@ It recognizes the following commands:
 .IP "" 0
 .
 .P
-If invited in a channel, \fBmpdircbot\fR will join it and respond to commands sent trough the channel itself, so that everyone in the channel can control the MPD playback\.
+If invited in a channel, \fBmpdircbot\fR will join it and respond to commands sent trough the channel itself, so that everyone in the channel can control the MPD playback\. To accept commands from a channel the mpdircbot nick has to be prepended to the command itself, e\.g\.:
+.
+.IP "\(bu" 4
+\fBmpdircbot, play\fR
+.
+.IP "\(bu" 4
+\fBmpdircbot, pause\fR
+.
+.IP "\(bu" 4
+\fBmpdircbot, toggle\fR
+.
+.IP "\(bu" 4
+\&\.\.\.
+.
+.IP "" 0
 .
 .SH "OPTIONS"
 \fB\-a, \-\-addr\fR
@@ -49,6 +63,12 @@ If invited in a channel, \fBmpdircbot\fR will join it and respond to commands se
 .
 .P
 \~\~\~\~\~\~ The MPD server port\.
+.
+.P
+\fB\-s, \-\-secret\fR
+.
+.P
+\~\~\~\~\~\~ The MPD password\.
 .
 .P
 \fB\-A, \-\-irc\-addr\fR

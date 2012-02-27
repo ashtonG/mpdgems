@@ -61,6 +61,7 @@ int main(int argc, char *argv[]) {
 	struct option long_opts[] = {
 		{ "addr",	required_argument,	0, 'a' },
 		{ "port",	required_argument,	0, 'p' },
+		{ "secret",	required_argument,	0, 's' },
 		{ "help",	no_argument,		0, 'h' },
 		{ 0,		0,			0,  0  }
 	};
@@ -72,11 +73,13 @@ int main(int argc, char *argv[]) {
 
 	char *mpd_addr = getenv("MPD_HOST");
 	int   mpd_port = getenv("MPD_PORT") ? atoi(getenv("MPD_PORT")) : 0;
+	char *mpd_pass = NULL;
 
-	while ((opts = getopt_long(argc, argv, "a:p:h", long_opts, 0)) != -1) {
+	while ((opts = getopt_long(argc, argv, "a:p:s:h", long_opts, 0)) != -1) {
 		switch (opts) {
 			case 'a': { mpd_addr = optarg;		break;     }
 			case 'p': { mpd_port = atoi(optarg);	break;     }
+			case 's': { mpd_pass = optarg;		break;     }
 			default :
 			case 'h': { help();			return -1; }
 		}
@@ -87,6 +90,15 @@ int main(int argc, char *argv[]) {
 	if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
 		mpd_connection_free(mpd);
 		return -1;
+	}
+
+	if (mpd_pass != NULL) {
+		mpd_run_password(mpd, mpd_pass);
+
+		if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
+			mpd_connection_free(mpd);
+			return -1;
+		}
 	}
 
 	mpd_send_list_all(mpd, "/");
@@ -127,6 +139,7 @@ static inline void help() {
 
 	CMD_HELP("--addr",	"-a",	"The MPD server address");
 	CMD_HELP("--port",	"-p",	"The MPD server port");
+	CMD_HELP("--secret",	"-s",	"The MPD password");
 	CMD_HELP("--help",	"-h",	"Show this help");
 
 	puts("");

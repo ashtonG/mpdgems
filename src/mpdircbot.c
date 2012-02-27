@@ -62,6 +62,7 @@ int main(int argc, char *argv[]) {
 	struct option long_opts[] = {
 		{ "addr",	required_argument,	0, 'a' },
 		{ "port",	required_argument,	0, 'p' },
+		{ "secret",	required_argument,	0, 's' },
 		{ "irc-addr",	required_argument,	0, 'A' },
 		{ "irc-port",	required_argument,	0, 'P' },
 		{ "nick",	required_argument,	0, 'N' },
@@ -71,6 +72,7 @@ int main(int argc, char *argv[]) {
 
 	char *mpd_addr = getenv("MPD_HOST");
 	int   mpd_port = getenv("MPD_PORT") ? atoi(getenv("MPD_PORT")) : 0;
+	char *mpd_pass = NULL;
 
 	char *irc_addr = "irc.freenode.net";
 	int   irc_port = 6667;
@@ -83,10 +85,11 @@ int main(int argc, char *argv[]) {
 		.event_channel = channel_cb,
 	};
 
-	while ((opts = getopt_long(argc, argv, "a:p:A:P:N:h", long_opts, 0)) != -1) {
+	while ((opts = getopt_long(argc, argv, "a:p:s:A:P:N:h", long_opts, 0)) != -1) {
 		switch (opts) {
 			case 'a': { mpd_addr = optarg;		break;     }
 			case 'p': { mpd_port = atoi(optarg);	break;     }
+			case 's': { mpd_pass = optarg;		break;     }
 			case 'A': { irc_addr = optarg;		break;     }
 			case 'P': { irc_port = atoi(optarg);	break;     }
 			case 'N': { irc_nick = optarg;		break;     }
@@ -99,6 +102,15 @@ int main(int argc, char *argv[]) {
 		if (mpd != NULL) mpd_connection_free(mpd);
 		mpd = mpd_connection_new(mpd_addr, mpd_port, 30000);
 	} while (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS);
+
+	if (mpd_pass != NULL) {
+		mpd_run_password(mpd, mpd_pass);
+
+		if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
+			mpd_connection_free(mpd);
+			return -1;
+		}
+	}
 
 	irc = irc_create_session(&cbs);
 
@@ -120,6 +132,7 @@ static inline void help() {
 
 	CMD_HELP("--addr",	"-a",	"The MPD server address");
 	CMD_HELP("--port",	"-p",	"The MPD server port");
+	CMD_HELP("--secret",	"-s",	"The MPD password");
 	CMD_HELP("--irc-addr",	"-A",	"The IRC server address");
 	CMD_HELP("--irc-port",	"-P",	"The IRC server port");
 	CMD_HELP("--nick",	"-N",	"The IRC nick for the bot");

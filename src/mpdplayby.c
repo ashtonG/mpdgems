@@ -49,6 +49,7 @@ int main(int argc, char *argv[]) {
 		{ "album",	required_argument,	0, 'b' },
 		{ "addr",	required_argument,	0, 'a' },
 		{ "port",	required_argument,	0, 'p' },
+		{ "secret",	required_argument,	0, 's' },
 		{ "help",	no_argument,		0, 'h' },
 		{ 0,		0,			0,  0  }
 	};
@@ -60,6 +61,7 @@ int main(int argc, char *argv[]) {
 
 	char *mpd_addr = getenv("MPD_HOST");
 	int   mpd_port = getenv("MPD_PORT") ? atoi(getenv("MPD_PORT")) : 0;
+	char *mpd_pass = NULL;
 
 	char *title  = NULL;
 	char *artist = NULL;
@@ -70,13 +72,14 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 
-	while ((opts = getopt_long(argc, argv, "t:r:b:a:p:h", long_opts, 0)) != -1) {
+	while ((opts = getopt_long(argc, argv, "t:r:b:a:p:s:h", long_opts, 0)) != -1) {
 		switch (opts) {
 			case 't': { title = optarg;		break;     }
 			case 'r': { artist = optarg;		break;     }
 			case 'b': { album = optarg;		break;     }
 			case 'a': { mpd_addr = optarg;		break;     }
 			case 'p': { mpd_port = atoi(optarg);	break;     }
+			case 's': { mpd_pass = optarg;		break;     }
 			default :
 			case 'h': { help();			return -1; }
 		}
@@ -87,6 +90,15 @@ int main(int argc, char *argv[]) {
 	if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
 		mpd_connection_free(mpd);
 		return -1;
+	}
+
+	if (mpd_pass != NULL) {
+		mpd_run_password(mpd, mpd_pass);
+
+		if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
+			mpd_connection_free(mpd);
+			return -1;
+		}
 	}
 
 	mpd_search_queue_songs(mpd, false);
@@ -146,6 +158,7 @@ static inline void help() {
 	CMD_HELP("--album",	"-b",	"Match song albums");
 	CMD_HELP("--addr",	"-a",	"The MPD server address");
 	CMD_HELP("--port",	"-p",	"The MPD server port");
+	CMD_HELP("--secret",	"-s",	"The MPD password");
 	CMD_HELP("--help",	"-h",	"Show this help");
 
 	puts("");

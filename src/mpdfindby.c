@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
 	char *title  = NULL;
 	char *artist = NULL;
 	char *album  = NULL;
-	char *fmt    = "title: %t\nartist: %r\nalbum: %b\n\n";
+	char *fmt    = "%r - %b - %t\n";
 
 	if (argc == 1) {
 		help();

@@ -42,6 +42,8 @@
 
 static struct mpd_connection *mpd = NULL;
 
+static char *irc_nick = "mpdircbot";
+
 static inline void help();
 
 static void run_mpd_cmd(irc_session_t *irc, const char *cmd, const char *orig);
@@ -72,7 +74,6 @@ int main(int argc, char *argv[]) {
 
 	char *irc_addr = "irc.freenode.net";
 	int   irc_port = 6667;
-	char *irc_nick = "mpdircbot";
 
 	irc_session_t *irc = NULL;
 	irc_callbacks_t cbs = {
@@ -182,5 +183,11 @@ static void invited_cb(IRC_CB_PARAMS) {
 }
 
 static void channel_cb(IRC_CB_PARAMS) {
-	run_mpd_cmd(irc, params[1], params[0]);
+	char *text = params[1];
+
+	if (!strncmp(text, irc_nick, strlen(irc_nick))) {
+		text += strlen(irc_nick) + 2;
+
+		run_mpd_cmd(irc, text, params[0]);
+	}
 }

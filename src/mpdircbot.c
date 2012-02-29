@@ -43,6 +43,7 @@
 static struct mpd_connection *mpd = NULL;
 
 static char *irc_nick = "mpdircbot";
+static char *irc_pass = NULL;
 
 static inline void help();
 
@@ -65,6 +66,7 @@ int main(int argc, char *argv[]) {
 		{ "secret",	required_argument,	0, 's' },
 		{ "irc-addr",	required_argument,	0, 'A' },
 		{ "irc-port",	required_argument,	0, 'P' },
+		{ "bot-secret",	required_argument,	0, 'S' },
 		{ "nick",	required_argument,	0, 'N' },
 		{ "help",	no_argument,		0, 'h' },
 		{ 0,		0,			0,  0  }
@@ -85,7 +87,7 @@ int main(int argc, char *argv[]) {
 		.event_channel = channel_cb,
 	};
 
-	while ((opts = getopt_long(argc, argv, "a:p:s:A:P:N:h", long_opts, 0)) != -1) {
+	while ((opts = getopt_long(argc, argv, "a:p:s:A:P:N:S:h", long_opts, 0)) != -1) {
 		switch (opts) {
 			case 'a': { mpd_addr = optarg;		break;     }
 			case 'p': { mpd_port = atoi(optarg);	break;     }
@@ -93,6 +95,7 @@ int main(int argc, char *argv[]) {
 			case 'A': { irc_addr = optarg;		break;     }
 			case 'P': { irc_port = atoi(optarg);	break;     }
 			case 'N': { irc_nick = optarg;		break;     }
+			case 'S': { irc_pass = optarg;		break;     }
 			default :
 			case 'h': { help();			return -1; }
 		}
@@ -135,13 +138,22 @@ static inline void help() {
 	CMD_HELP("--secret",	"-s",	"The MPD password");
 	CMD_HELP("--irc-addr",	"-A",	"The IRC server address");
 	CMD_HELP("--irc-port",	"-P",	"The IRC server port");
+	CMD_HELP("--bot-secret","-S",	"The password to access the bot");
 	CMD_HELP("--nick",	"-N",	"The IRC nick for the bot");
 	CMD_HELP("--help",	"-h",	"Show this help");
 
 	puts("");
 }
 
-static void run_mpd_cmd(irc_session_t *irc, const char *cmd, const char *orig) {
+static void run_mpd_cmd(irc_session_t *irc, const char *p, const char *orig) {
+	char *cmd = (char *) p;
+
+	if (irc_pass)
+		if (!strncmp(cmd, irc_pass, strlen(irc_pass)))
+			cmd += strlen(irc_pass) + 1;
+		else
+			return;
+
 	if (!strncmp("play", cmd, 4)) {
 		mpd_run_play(mpd);
 		irc_cmd_me(irc, orig, "started playback");
@@ -196,7 +208,7 @@ static void invited_cb(IRC_CB_PARAMS) {
 }
 
 static void channel_cb(IRC_CB_PARAMS) {
-	char *text = params[1];
+	char *text = (char *) params[1];
 
 	if (!strncmp(text, irc_nick, strlen(irc_nick))) {
 		text += strlen(irc_nick) + 2;

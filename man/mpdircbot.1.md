@@ -19,6 +19,9 @@ It recognizes the following commands:
  * `prev`
  * `next`
 
+If a password has been defined with the `--bot-secret` option, all the commands
+have to be prepended with that password, i.e. "<pass> <command>".
+
 If invited in a channel, **mpdircbot** will join it and respond to commands
 sent trough the channel itself, so that everyone in the channel can control
 the MPD playback. To accept commands from a channel the mpdircbot nick has to
@@ -60,6 +63,11 @@ The IRC server port (default `6667`).
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 The IRC nick for the bot (default `mpdircbot`).
+
+`-S, --bot-secret`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+The password to access the bot (none by default).
 
 `-h, --help`
 

@@ -33,6 +33,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
@@ -52,8 +53,11 @@ static inline list_node_t *list_init();
 static inline list_node_t *list_head(list_node_t *l);
 static inline void list_insert_tail(list_node_t *l, void *item);
 
-#define list_foreach(ITEM, L) \
+#define list_foreach(ITEM, L)	\
 	for (ITEM = list_head(L); ITEM != L; ITEM = ITEM -> next)
+
+#define CHECK_MPD_CONN(mpd)	\
+	assert(mpd_connection_get_error(mpd) == MPD_ERROR_SUCCESS);
 
 int main(int argc, char *argv[]) {
 	int opts;
@@ -86,29 +90,16 @@ int main(int argc, char *argv[]) {
 	}
 
 	mpd = mpd_connection_new(mpd_addr, mpd_port, 30000);
-
-	if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-		mpd_connection_free(mpd);
-		return -1;
-	}
+	CHECK_MPD_CONN(mpd);
 
 	if (mpd_pass != NULL) {
 		mpd_run_password(mpd, mpd_pass);
-
-		if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-			mpd_connection_free(mpd);
-			return -1;
-		}
+		CHECK_MPD_CONN(mpd);
 	}
 
 	mpd_send_list_all(mpd, "/");
 
 	while ((song = mpd_recv_song(mpd))) {
-		if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-			mpd_connection_free(mpd);
-			return -1;
-		}
-
 		list_insert_tail(songs_list, strdup(mpd_song_get_uri(song)));
 
 		mpd_song_free(song);
@@ -118,12 +109,9 @@ int main(int argc, char *argv[]) {
 
 	list_foreach(iter, songs_list) {
 		char *uri = iter -> value;
-		mpd_run_add(mpd, uri);
 
-		if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-			mpd_connection_free(mpd);
-			return -1;
-		}
+		mpd_run_add(mpd, uri);
+		CHECK_MPD_CONN(mpd);
 	}
 
 	mpd_connection_free(mpd);

@@ -33,6 +33,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
@@ -48,6 +49,9 @@ static inline void help();
 static inline void x11_grab_key(Display *dpy, Window root, const char *key_string);
 static inline void x11_ungrab_key(Display *dpy, Window root, const char *key_string);
 static inline void x11_handle_key(Display *dpy, XEvent ev, struct mpd_connection *mpd);
+
+#define CHECK_MPD_CONN(mpd)	\
+	assert(mpd_connection_get_error(mpd) == MPD_ERROR_SUCCESS);
 
 int main(int argc, char *argv[]) {
 	int opts;
@@ -86,11 +90,7 @@ int main(int argc, char *argv[]) {
 
 	if (mpd_pass != NULL) {
 		mpd_run_password(mpd, mpd_pass);
-
-		if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-			mpd_connection_free(mpd);
-			return -1;
-		}
+		CHECK_MPD_CONN(mpd);
 	}
 
 	XSelectInput(dpy, root, KeyPressMask);

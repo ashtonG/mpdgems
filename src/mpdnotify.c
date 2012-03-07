@@ -33,6 +33,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -49,6 +50,9 @@ static int   nocover    = 0;
 
 static inline void help();
 static void notify(NotifyNotification *n, struct mpd_song *song);
+
+#define CHECK_MPD_CONN(mpd)	\
+	assert(mpd_connection_get_error(mpd) == MPD_ERROR_SUCCESS);
 
 int main(int argc, char *argv[]) {
 	int opts;
@@ -91,11 +95,7 @@ int main(int argc, char *argv[]) {
 
 	if (mpd_pass != NULL) {
 		mpd_run_password(mpd, mpd_pass);
-
-		if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-			mpd_connection_free(mpd);
-			return -1;
-		}
+		CHECK_MPD_CONN(mpd);
 	}
 
 	notify_init("mpdnotify");
@@ -104,11 +104,7 @@ int main(int argc, char *argv[]) {
 		NotifyNotification *n = notify_notification_new("", "", "");
 
 		struct mpd_song *song = mpd_run_current_song(mpd);
-
-		if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-			mpd_connection_free(mpd);
-			return -1;
-		}
+		CHECK_MPD_CONN(mpd);
 
 		if (song != NULL) {
 			unsigned int id = mpd_song_get_id(song);
@@ -122,11 +118,7 @@ int main(int argc, char *argv[]) {
 		}
 
 		mpd_run_idle_mask(mpd, MPD_IDLE_PLAYER);
-
-		if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-			mpd_connection_free(mpd);
-			return -1;
-		}
+		CHECK_MPD_CONN(mpd);
 	}
 
 	mpd_connection_free(mpd);

@@ -33,6 +33,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -56,6 +57,9 @@ static void connect_cb(IRC_CB_PARAMS);
 static void privmsg_cb(IRC_CB_PARAMS);
 static void invited_cb(IRC_CB_PARAMS);
 static void channel_cb(IRC_CB_PARAMS);
+
+#define CHECK_MPD_CONN(mpd)	\
+	assert(mpd_connection_get_error(mpd) == MPD_ERROR_SUCCESS);
 
 int main(int argc, char *argv[]) {
 	int opts;
@@ -108,11 +112,7 @@ int main(int argc, char *argv[]) {
 
 	if (mpd_pass != NULL) {
 		mpd_run_password(mpd, mpd_pass);
-
-		if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-			mpd_connection_free(mpd);
-			return -1;
-		}
+		CHECK_MPD_CONN(mpd);
 	}
 
 	irc = irc_create_session(&cbs);
@@ -193,6 +193,8 @@ static void run_mpd_cmd(irc_session_t *irc, const char *p, const char *orig) {
 	/*if (!strncmp("quit", cmd, 4)) {
 		irc_destroy_session(irc);
 	}*/
+
+	CHECK_MPD_CONN(mpd);
 }
 
 static void connect_cb(IRC_CB_PARAMS) {

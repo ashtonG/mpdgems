@@ -33,12 +33,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
 #include <mpd/client.h>
 
 static inline void help();
+
+#define CHECK_MPD_CONN(mpd)	\
+	assert(mpd_connection_get_error(mpd) == MPD_ERROR_SUCCESS);
 
 int main(int argc, char *argv[]) {
 	int opts;
@@ -74,29 +78,16 @@ int main(int argc, char *argv[]) {
 	}
 
 	mpd = mpd_connection_new(mpd_addr, mpd_port, 30000);
-
-	if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-		mpd_connection_free(mpd);
-		return -1;
-	}
+	CHECK_MPD_CONN(mpd);
 
 	if (mpd_pass != NULL) {
 		mpd_run_password(mpd, mpd_pass);
-
-		if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-			mpd_connection_free(mpd);
-			return -1;
-		}
+		CHECK_MPD_CONN(mpd);
 	}
 
 	mpd_send_list_all_meta(mpd, "/");
 
 	while ((song = mpd_recv_song(mpd))) {
-		if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-			mpd_connection_free(mpd);
-			return -1;
-		}
-
 		tot += mpd_song_get_duration(song);
 
 		mpd_song_free(song);

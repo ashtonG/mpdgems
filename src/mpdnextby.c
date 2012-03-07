@@ -33,12 +33,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
 #include <mpd/client.h>
 
 static inline void help();
+
+#define CHECK_MPD_CONN(mpd)	\
+	assert(mpd_connection_get_error(mpd) == MPD_ERROR_SUCCESS);
 
 int main(int argc, char *argv[]) {
 	int opts;
@@ -87,19 +91,11 @@ int main(int argc, char *argv[]) {
 	}
 
 	mpd = mpd_connection_new(mpd_addr, mpd_port, 30000);
-
-	if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-		mpd_connection_free(mpd);
-		return -1;
-	}
+	CHECK_MPD_CONN(mpd);
 
 	if (mpd_pass != NULL) {
 		mpd_run_password(mpd, mpd_pass);
-
-		if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-			mpd_connection_free(mpd);
-			return -1;
-		}
+		CHECK_MPD_CONN(mpd);
 	}
 
 	mpd_search_queue_songs(mpd, false);
@@ -129,11 +125,6 @@ int main(int argc, char *argv[]) {
 
 	song = mpd_recv_song(mpd);
 
-	if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-		mpd_connection_free(mpd);
-		return -1;
-	}
-
 	mpd_response_finish(mpd);
 
 	if (song) {
@@ -144,29 +135,17 @@ int main(int argc, char *argv[]) {
 			unsigned int got = 0;
 
 			mpd_run_idle_mask(mpd, MPD_IDLE_PLAYER);
-
-			if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-				mpd_connection_free(mpd);
-				return -1;
-			}
+			CHECK_MPD_CONN(mpd);
 
 			song = mpd_run_current_song(mpd);
-
-			if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-				mpd_connection_free(mpd);
-				return -1;
-			}
+			CHECK_MPD_CONN(mpd);
 
 			got = mpd_song_get_id(song);
 			mpd_song_free(song);
 
 			if (current != got) {
 				mpd_run_play_id(mpd, id);
-
-				if (mpd_connection_get_error(mpd) != MPD_ERROR_SUCCESS) {
-					mpd_connection_free(mpd);
-					return -1;
-				}
+				CHECK_MPD_CONN(mpd);
 
 				mpd_connection_free(mpd);
 				return 0;

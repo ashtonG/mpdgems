@@ -165,10 +165,15 @@ static inline void x11_ungrab_key(Display *dpy, Window root, const char *key_str
 }
 
 static inline void x11_handle_key(Display *dpy, XEvent ev, struct mpd_connection *mpd) {
-	if (XEvEqKeyString(ev, "XF86AudioPlay")) { mpd_run_toggle_pause(mpd);	return; }
-	if (XEvEqKeyString(ev, "XF86AudioStop")) { mpd_run_stop(mpd);		return; }
-	if (XEvEqKeyString(ev, "XF86AudioPrev")) { mpd_run_previous(mpd);	return; }
-	if (XEvEqKeyString(ev, "XF86AudioNext")) { mpd_run_next(mpd);		return; }
+	if (XEvEqKeyString(ev, "XF86AudioPlay"))
+		mpd_run_toggle_pause(mpd);
+	else if (XEvEqKeyString(ev, "XF86AudioStop")) 
+		mpd_run_stop(mpd);
+	else if (XEvEqKeyString(ev, "XF86AudioPrev"))
+		mpd_run_previous(mpd);
+	else if (XEvEqKeyString(ev, "XF86AudioNext"))
+		mpd_run_next(mpd);
 
 	XAllowEvents(dpy, AsyncKeyboard, ev.xkey.time);
 }
+

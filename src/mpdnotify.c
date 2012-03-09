@@ -75,6 +75,8 @@ int main(int argc, char *argv[]) {
 	int   mpd_port = getenv("MPD_PORT") ? atoi(getenv("MPD_PORT")) : 0;
 	char *mpd_pass = NULL;
 
+	NotifyNotification *n = NULL;
+
 	while ((opts = getopt_long(argc, argv, "d:c:Ca:p:s:h", long_opts, 0)) != -1) {
 		switch (opts) {
 			case 'd': { music_dir = optarg;		break;     }
@@ -99,10 +101,10 @@ int main(int argc, char *argv[]) {
 	}
 
 	notify_init("mpdnotify");
+	
+	n = notify_notification_new("", "", "");
 
 	while (true) {
-		NotifyNotification *n = notify_notification_new("", "", "");
-
 		struct mpd_song *song = mpd_run_current_song(mpd);
 		CHECK_MPD_CONN(mpd);
 

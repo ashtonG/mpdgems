@@ -15,7 +15,7 @@ shows a nice desktop notification when that happens.
 `-d, --dir`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-The "root" music directory.
+The "root" music directory. This is used to find album cover files.
 
 `-c, --cover`
 

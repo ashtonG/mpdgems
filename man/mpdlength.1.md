@@ -8,7 +8,7 @@ mpdlength(1) -- print the total length of the current playlist
 ## DESCRIPTION
 
 **mpdlength** is a simple utility that prints to `STDOUT` the total length of
-the current playlist. The output format is configurable.
+the current playlist or of the whole databse. The output format is configurable.
 
 ## OPTIONS ##
 
@@ -18,6 +18,11 @@ the current playlist. The output format is configurable.
 The output format string. `%d` is replaced by the number of days, `%h` by the
 number of hours, `%m` by the number of minutes and `%s` by the number of seconds.
 Example: `%d days, %h hours, %m mins and %s secs`
+
+`-d, --db`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Search the MPD databse instead of the current playlist.
 
 `-a, --addr`
 

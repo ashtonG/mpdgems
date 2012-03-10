@@ -8,8 +8,10 @@ mpdfindby(1) -- find and print matching songs
 ## DESCRIPTION
 
 **mpdfindby** is a simple utility that, given some information about some songs
-(i.e. title, artist and album), prints to `STDOUT` the matching entries. The
-output format is configurable.
+(i.e. title, artist and album), prints to `STDOUT` the matching entries in the
+current playlist or in the whole database. The output format is configurable.
+
+Optionally a new playlist can be created out of the matching songs.
 
 ## OPTIONS ##
 

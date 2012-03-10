@@ -47,9 +47,10 @@ static inline void help();
 int main(int argc, char *argv[]) {
 	int opts;
 
-	const char   *short_opts  = "f:a:p:s:h";
+	const char   *short_opts  = "f:da:p:s:h";
 	struct option long_opts[] = {
 		{ "format",	required_argument,	0, 'f' },
+		{ "db",		no_argument,		0, 'd' },
 		{ "addr",	required_argument,	0, 'a' },
 		{ "port",	required_argument,	0, 'p' },
 		{ "secret",	required_argument,	0, 's' },
@@ -61,15 +62,17 @@ int main(int argc, char *argv[]) {
 	struct mpd_song *song = NULL;
 	struct mpd_connection *mpd = NULL;
 
-	char *mpd_addr = getenv("MPD_HOST");
-	int   mpd_port = getenv("MPD_PORT") ? atoi(getenv("MPD_PORT")) : 0;
-	char *mpd_pass = NULL;
+	char *mpd_addr  = getenv("MPD_HOST");
+	int   mpd_port  = getenv("MPD_PORT") ? atoi(getenv("MPD_PORT")) : 0;
+	char *mpd_pass  = NULL;
+	int   search_db = 0;
 
 	char *fmt = "%d days, %h hours, %m mins and %s secs";
 
 	while ((opts = getopt_long(argc, argv, short_opts, long_opts, 0)) != -1) {
 		switch (opts) {
 			case 'f': { fmt = optarg;		break;     }
+			case 'd': { search_db = 1;		break;     }
 			case 'a': { mpd_addr = optarg;		break;     }
 			case 'p': { mpd_port = atoi(optarg);	break;     }
 			case 's': { mpd_pass = optarg;		break;     }
@@ -85,6 +88,11 @@ int main(int argc, char *argv[]) {
 		mpd_run_password(mpd, mpd_pass);
 		CHECK_MPD_CONN(mpd);
 	}
+
+	if (search_db)
+		mpd_send_list_all_meta(mpd, "/");
+	else
+		mpd_send_list_queue_meta(mpd);
 
 	mpd_send_list_all_meta(mpd, "/");
 
@@ -142,6 +150,7 @@ static inline void help() {
 	puts(" Options:");
 
 	CMD_HELP("--format",	"-f",	"The output format string");
+	CMD_HELP("--db",	"-d",	"Search the MPD database instead of the current playlist");
 	CMD_HELP("--addr",	"-a",	"The MPD server address");
 	CMD_HELP("--port",	"-p",	"The MPD server port");
 	CMD_HELP("--secret",	"-s",	"The MPD password");

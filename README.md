@@ -6,7 +6,6 @@ Music Player Daemon) intended to be used from the command line or in the backgro
 
 The collection currently includes:
 
- * **mpdaddall** -- add __all__ the songs to the current playlist
  * **mpdfindby** -- find and print matching songs
  * **mpdircbot** -- control MPD playback through an IRC bot
  * **mpdislast** -- stop playback after the currently playing song

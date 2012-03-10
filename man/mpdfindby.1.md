@@ -36,6 +36,16 @@ artist, `%b` by the song album, `%k` by the song number, `%d` by the song date
 and `%g` by the song genre. Escaped new lines (`\n`) are also supported.
 Example: `title: %t\nartist: %r\nalbum: %b\n\n`.
 
+`-d, --db`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Search the MPD databse instead of the current playlist.
+
+`-l, --list`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Create a playlist with the matching songs.
+
 `-a, --addr`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

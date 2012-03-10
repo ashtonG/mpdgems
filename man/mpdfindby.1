@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "MPDFINDBY" "1" "February 2012" "" ""
+.TH "MPDFINDBY" "1" "March 2012" "" ""
 .
 .SH "NAME"
 \fBmpdfindby\fR \- find and print matching songs
@@ -35,6 +35,18 @@
 .
 .P
 \~\~\~\~\~\~ The output format string\. \fB%t\fR is replaced by the song title, \fB%r\fR by the song artist, \fB%b\fR by the song album, \fB%k\fR by the song number, \fB%d\fR by the song date and \fB%g\fR by the song genre\. Escaped new lines (\fB\en\fR) are also supported\. Example: \fBtitle: %t\enartist: %r\enalbum: %b\en\en\fR\.
+.
+.P
+\fB\-d, \-\-db\fR
+.
+.P
+\~\~\~\~\~\~ Search the MPD databse instead of the current playlist\.
+.
+.P
+\fB\-l, \-\-list\fR
+.
+.P
+\~\~\~\~\~\~ Create a playlist with the matching songs\.
 .
 .P
 \fB\-a, \-\-addr\fR

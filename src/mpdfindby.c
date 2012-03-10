@@ -36,10 +36,28 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <getopt.h>
 #include <mpd/client.h>
 
+typedef struct NODE {
+	void *value;
+
+	struct NODE *prev;
+	struct NODE *next;
+} list_node_t;
+
+static inline void format_song(char *fmt, struct mpd_song *song);
 static inline void help();
+
+static inline list_node_t *list_init();
+static inline list_node_t *list_head(list_node_t *l);
+static inline void list_insert_tail(list_node_t *l, void *item);
+static inline void list_remove(list_node_t *l);
+static inline bool list_is_empty(list_node_t *l);
+
+#define list_foreach_safe(ITEM, SAFE, L) \
+	for (ITEM = list_head(L), SAFE = ITEM -> next; ITEM != L; ITEM = SAFE, SAFE = ITEM -> next)
 
 #define CHECK_MPD_CONN(mpd)	\
 	assert(mpd_connection_get_error(mpd) == MPD_ERROR_SUCCESS);
@@ -52,6 +70,8 @@ int main(int argc, char *argv[]) {
 		{ "artist",	required_argument,	0, 'r' },
 		{ "album",	required_argument,	0, 'b' },
 		{ "format",	required_argument,	0, 'f' },
+		{ "db",		no_argument,		0, 'd' },
+		{ "list",	no_argument,		0, 'l' },
 		{ "addr",	required_argument,	0, 'a' },
 		{ "port",	required_argument,	0, 'p' },
 		{ "secret",	required_argument,	0, 's' },
@@ -59,14 +79,16 @@ int main(int argc, char *argv[]) {
 		{ 0,		0,			0,  0  }
 	};
 
-	unsigned int id = 0;
-
 	struct mpd_song *song = NULL;
 	struct mpd_connection *mpd = NULL;
 
-	char *mpd_addr = getenv("MPD_HOST");
-	int   mpd_port = getenv("MPD_PORT") ? atoi(getenv("MPD_PORT")) : 0;
-	char *mpd_pass = NULL;
+	list_node_t *songs_list = list_init(), *iter, *safe;
+
+	char *mpd_addr  = getenv("MPD_HOST");
+	int   mpd_port  = getenv("MPD_PORT") ? atoi(getenv("MPD_PORT")) : 0;
+	char *mpd_pass  = NULL;
+	int   search_db = 0;
+	int   playlist  = 0;
 
 	char *title  = NULL;
 	char *artist = NULL;
@@ -78,12 +100,14 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 
-	while ((opts = getopt_long(argc, argv, "t:r:b:f:a:p:s:h", long_opts, 0)) != -1) {
+	while ((opts = getopt_long(argc, argv, "t:r:b:f:dla:p:s:h", long_opts, 0)) != -1) {
 		switch (opts) {
 			case 't': { title = optarg;		break;     }
 			case 'r': { artist = optarg;		break;     }
 			case 'b': { album = optarg;		break;     }
 			case 'f': { fmt = optarg;		break;     }
+			case 'd': { search_db = 1;		break;     }
+			case 'l': { playlist = 1;		break;     }
 			case 'a': { mpd_addr = optarg;		break;     }
 			case 'p': { mpd_port = atoi(optarg);	break;     }
 			case 's': { mpd_pass = optarg;		break;     }
@@ -100,7 +124,10 @@ int main(int argc, char *argv[]) {
 		CHECK_MPD_CONN(mpd);
 	}
 
-	mpd_search_queue_songs(mpd, false);
+	if (search_db)
+		mpd_search_db_songs(mpd, false);
+	else
+		mpd_search_queue_songs(mpd, false);
 
 	if (title) {
 		mpd_search_add_tag_constraint(
@@ -126,57 +153,78 @@ int main(int argc, char *argv[]) {
 	mpd_search_commit(mpd);
 
 	while (song = mpd_recv_song(mpd)) {
-		const char *fmt_copy;
+		format_song(fmt, song);
 
-		fmt_copy = fmt;
-
-		CHECK_MPD_CONN(mpd);
-
-		while (*fmt_copy != 0) {
-			if (*fmt_copy == '%') {
-				switch (*(fmt_copy + 1)) {
-					case 't': printf("%s", mpd_song_get_tag(song, MPD_TAG_TITLE, 0));  break;
-					case 'r': printf("%s", mpd_song_get_tag(song, MPD_TAG_ARTIST, 0)); break;
-					case 'b': printf("%s", mpd_song_get_tag(song, MPD_TAG_ALBUM, 0));  break;
-					case 'k': printf("%s", mpd_song_get_tag(song, MPD_TAG_TRACK, 0));  break;
-					case 'd': printf("%s", mpd_song_get_tag(song, MPD_TAG_DATE, 0));  break;
-					case 'g': printf("%s", mpd_song_get_tag(song, MPD_TAG_GENRE, 0));  break;
-				}
-
-				fmt_copy += 2;
-				if (*fmt_copy == '\0') break;
-			}
-
-			if (*fmt_copy == '\\') {
-				switch (*(fmt_copy + 1)) {
-					case 'n': printf("\n");  break;
-				}
-
-				fmt_copy += 2;
-				if (*fmt_copy == '\0') break;
-			}
-
-			putchar(*fmt_copy);
-			fmt_copy++;
-		}
+		list_insert_tail(songs_list, strdup(mpd_song_get_uri(song)));
 
 		mpd_song_free(song);
 	}
 
 	mpd_response_finish(mpd);
 
-	if (song) {
-		id = mpd_song_get_id(song);
+	if (playlist) {
+		mpd_run_clear(mpd);
 
-		mpd_song_free(song);
+		list_foreach_safe(iter, safe, songs_list) {
+			char *uri = iter -> value;
 
-		mpd_run_play_id(mpd, id);
-		CHECK_MPD_CONN(mpd);
+			mpd_run_add(mpd, uri);
+			CHECK_MPD_CONN(mpd);
+
+			free(uri);
+			list_remove(iter);
+		}
 	}
 
 	mpd_connection_free(mpd);
+	free(songs_list);
 
 	return 0;
+}
+
+static inline void format_song(char *fmt, struct mpd_song *song) {
+	const char *fmt_copy = fmt;
+
+	while (*fmt_copy != 0) {
+		if (*fmt_copy == '%') {
+			const char *title	=
+				mpd_song_get_tag(song, MPD_TAG_TITLE, 0);
+			const char *artist	=
+				mpd_song_get_tag(song, MPD_TAG_ARTIST, 0);
+			const char *album	=
+				mpd_song_get_tag(song, MPD_TAG_ALBUM, 0);
+			const char *track	=
+				mpd_song_get_tag(song, MPD_TAG_TRACK, 0);
+			const char *date	=
+				mpd_song_get_tag(song, MPD_TAG_DATE, 0);
+			const char *genre	=
+				mpd_song_get_tag(song, MPD_TAG_GENRE, 0);
+
+			switch (*(fmt_copy + 1)) {
+				case 't': printf("%s", title);	break;
+				case 'r': printf("%s", artist);	break;
+				case 'b': printf("%s", album);	break;
+				case 'k': printf("%s", track);	break;
+				case 'd': printf("%s", date);	break;
+				case 'g': printf("%s", genre);	break;
+			}
+
+			fmt_copy += 2;
+			if (*fmt_copy == '\0') break;
+		}
+
+		if (*fmt_copy == '\\') {
+			switch (*(fmt_copy + 1)) {
+				case 'n': printf("\n");  break;
+			}
+
+			fmt_copy += 2;
+			if (*fmt_copy == '\0') break;
+		}
+
+		putchar(*fmt_copy);
+		fmt_copy++;
+	}
 }
 
 static inline void help() {
@@ -189,10 +237,55 @@ static inline void help() {
 	CMD_HELP("--artist",	"-r",	"Match song artists");
 	CMD_HELP("--album",	"-b",	"Match song albums");
 	CMD_HELP("--format",	"-f",	"The output format string");
+	CMD_HELP("--db",	"-d",	"Search the MPD database instead of the current playlist");
+	CMD_HELP("--list",	"-l",	"Create a playlist with the matching songs");
 	CMD_HELP("--addr",	"-a",	"The MPD server address");
 	CMD_HELP("--port",	"-p",	"The MPD server port");
 	CMD_HELP("--secret",	"-s",	"The MPD password");
 	CMD_HELP("--help",	"-h",	"Show this help");
 
 	puts("");
+}
+
+static inline list_node_t *list_init() {
+	list_node_t *t = (list_node_t *) malloc(sizeof(list_node_t));
+
+	if (t == NULL)
+		return NULL;
+
+	t -> prev = t;
+	t -> next = t;
+
+	return t;
+}
+
+static inline bool list_is_empty(list_node_t *l) {
+	if (l == NULL || l == l -> next)
+		return true;
+
+	return false;
+}
+
+static inline list_node_t *list_head(list_node_t *l) {
+	return l -> next;
+}
+
+static inline void list_insert_tail(list_node_t *l, void *item) {
+	list_node_t *t = list_init();
+
+	t -> value = item;
+
+	t -> prev = l -> prev;
+	t -> next = l;
+	t -> prev -> next = t;
+
+	l -> prev = t;
+}
+
+static inline void list_remove(list_node_t *l) {
+	l -> prev -> next = l -> next;
+	l -> next -> prev = l -> prev;
+
+	if (!list_is_empty(l))
+		free(l);
 }

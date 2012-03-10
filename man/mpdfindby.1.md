@@ -13,6 +13,11 @@ output format is configurable.
 
 ## OPTIONS ##
 
+`-A, --all`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Match all the songs.
+
 `-t, --title`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

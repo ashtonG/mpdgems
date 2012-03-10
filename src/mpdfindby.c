@@ -65,8 +65,9 @@ static inline bool list_is_empty(list_node_t *l);
 int main(int argc, char *argv[]) {
 	int opts;
 
-	const char   *short_opts  = "t:r:b:f:dla:p:s:h";
+	const char   *short_opts  = "At:r:b:f:dla:p:s:h";
 	struct option long_opts[] = {
+		{ "all",	no_argument,		0, 'A' },
 		{ "title",	required_argument,	0, 't' },
 		{ "artist",	required_argument,	0, 'r' },
 		{ "album",	required_argument,	0, 'b' },
@@ -88,6 +89,7 @@ int main(int argc, char *argv[]) {
 	char *mpd_addr  = getenv("MPD_HOST");
 	int   mpd_port  = getenv("MPD_PORT") ? atoi(getenv("MPD_PORT")) : 0;
 	char *mpd_pass  = NULL;
+	int   match_all = 0;
 	int   search_db = 0;
 	int   playlist  = 0;
 
@@ -103,6 +105,7 @@ int main(int argc, char *argv[]) {
 
 	while ((opts = getopt_long(argc, argv, short_opts, long_opts, 0)) != -1) {
 		switch (opts) {
+			case 'A': { match_all = 1;		break;     }
 			case 't': { title = optarg;		break;     }
 			case 'r': { artist = optarg;		break;     }
 			case 'b': { album = optarg;		break;     }
@@ -125,33 +128,40 @@ int main(int argc, char *argv[]) {
 		CHECK_MPD_CONN(mpd);
 	}
 
-	if (search_db)
-		mpd_search_db_songs(mpd, false);
-	else
-		mpd_search_queue_songs(mpd, false);
+	if (match_all) {
+		if (search_db)
+			mpd_send_list_all_meta(mpd, "/");
+		else
+			mpd_send_list_queue_meta(mpd);
+	} else {
+		if (search_db)
+			mpd_search_db_songs(mpd, false);
+		else
+			mpd_search_queue_songs(mpd, false);
 
-	if (title) {
-		mpd_search_add_tag_constraint(
-			mpd, MPD_OPERATOR_DEFAULT,
-			MPD_TAG_TITLE, title
-		);
+		if (title) {
+			mpd_search_add_tag_constraint(
+				mpd, MPD_OPERATOR_DEFAULT,
+				MPD_TAG_TITLE, title
+			);
+		}
+
+		if (artist) {
+			mpd_search_add_tag_constraint(
+				mpd, MPD_OPERATOR_DEFAULT,
+				MPD_TAG_ARTIST, artist
+			);
+		}
+
+		if (album) {
+			mpd_search_add_tag_constraint(
+				mpd, MPD_OPERATOR_DEFAULT,
+				MPD_TAG_ALBUM, album
+			);
+		}
+
+		mpd_search_commit(mpd);
 	}
-
-	if (artist) {
-		mpd_search_add_tag_constraint(
-			mpd, MPD_OPERATOR_DEFAULT,
-			MPD_TAG_ARTIST, artist
-		);
-	}
-
-	if (album) {
-		mpd_search_add_tag_constraint(
-			mpd, MPD_OPERATOR_DEFAULT,
-			MPD_TAG_ALBUM, album
-		);
-	}
-
-	mpd_search_commit(mpd);
 
 	while (song = mpd_recv_song(mpd)) {
 		const char *uri = mpd_song_get_uri(song);
@@ -235,6 +245,7 @@ static inline void help() {
 	puts("Usage: mpdfindby [OPTIONS]\n");
 	puts(" Options:");
 
+	CMD_HELP("--all",	"-A",	"Match all the songs");
 	CMD_HELP("--title",	"-t",	"Match song titles");
 	CMD_HELP("--artist",	"-r",	"Match song artists");
 	CMD_HELP("--album",	"-b",	"Match song albums");

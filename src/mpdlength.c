@@ -47,6 +47,7 @@ static inline void help();
 int main(int argc, char *argv[]) {
 	int opts;
 
+	const char   *short_opts  = "f:a:p:s:h";
 	struct option long_opts[] = {
 		{ "format",	required_argument,	0, 'f' },
 		{ "addr",	required_argument,	0, 'a' },
@@ -66,7 +67,7 @@ int main(int argc, char *argv[]) {
 
 	char *fmt = "%d days, %h hours, %m mins and %s secs";
 
-	while ((opts = getopt_long(argc, argv, "f:a:p:s:h", long_opts, 0)) != -1) {
+	while ((opts = getopt_long(argc, argv, short_opts, long_opts, 0)) != -1) {
 		switch (opts) {
 			case 'f': { fmt = optarg;		break;     }
 			case 'a': { mpd_addr = optarg;		break;     }

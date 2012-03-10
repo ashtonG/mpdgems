@@ -47,6 +47,7 @@ static inline void help();
 int main(int argc, char *argv[]) {
 	int opts;
 
+	const char   *short_opts  = "a:p:s:h";
 	struct option long_opts[] = {
 		{ "addr",	required_argument,	0, 'a' },
 		{ "port",	required_argument,	0, 'p' },
@@ -64,7 +65,7 @@ int main(int argc, char *argv[]) {
 	int   mpd_port = getenv("MPD_PORT") ? atoi(getenv("MPD_PORT")) : 0;
 	char *mpd_pass = NULL;
 
-	while ((opts = getopt_long(argc, argv, "a:p:s:h", long_opts, 0)) != -1) {
+	while ((opts = getopt_long(argc, argv, short_opts, long_opts, 0)) != -1) {
 		switch (opts) {
 			case 'a': { mpd_addr = optarg;		break;     }
 			case 'p': { mpd_port = atoi(optarg);	break;     }

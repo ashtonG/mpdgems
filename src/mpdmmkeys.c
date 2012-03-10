@@ -56,6 +56,7 @@ static inline void x11_handle_key(Display *dpy, XEvent ev, struct mpd_connection
 int main(int argc, char *argv[]) {
 	int opts;
 
+	const char   *short_opts  = "a:p:s:h";
 	struct option long_opts[] = {
 		{ "addr",	required_argument,	0, 'a' },
 		{ "port",	required_argument,	0, 'p' },
@@ -73,7 +74,7 @@ int main(int argc, char *argv[]) {
 	Display	*dpy	= XOpenDisplay(0);
 	Window	root	= DefaultRootWindow(dpy);
 
-	while ((opts = getopt_long(argc, argv, "a:p:s:h", long_opts, 0)) != -1) {
+	while ((opts = getopt_long(argc, argv, short_opts, long_opts, 0)) != -1) {
 		switch (opts) {
 			case 'a': { mpd_addr = optarg;		break;     }
 			case 'p': { mpd_port = atoi(optarg);	break;     }
@@ -167,7 +168,7 @@ static inline void x11_ungrab_key(Display *dpy, Window root, const char *key_str
 static inline void x11_handle_key(Display *dpy, XEvent ev, struct mpd_connection *mpd) {
 	if (XEvEqKeyString(ev, "XF86AudioPlay"))
 		mpd_run_toggle_pause(mpd);
-	else if (XEvEqKeyString(ev, "XF86AudioStop")) 
+	else if (XEvEqKeyString(ev, "XF86AudioStop"))
 		mpd_run_stop(mpd);
 	else if (XEvEqKeyString(ev, "XF86AudioPrev"))
 		mpd_run_previous(mpd);

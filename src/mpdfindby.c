@@ -65,6 +65,7 @@ static inline bool list_is_empty(list_node_t *l);
 int main(int argc, char *argv[]) {
 	int opts;
 
+	const char   *short_opts  = "t:r:b:f:dla:p:s:h";
 	struct option long_opts[] = {
 		{ "title",	required_argument,	0, 't' },
 		{ "artist",	required_argument,	0, 'r' },
@@ -100,7 +101,7 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 
-	while ((opts = getopt_long(argc, argv, "t:r:b:f:dla:p:s:h", long_opts, 0)) != -1) {
+	while ((opts = getopt_long(argc, argv, short_opts, long_opts, 0)) != -1) {
 		switch (opts) {
 			case 't': { title = optarg;		break;     }
 			case 'r': { artist = optarg;		break;     }
@@ -153,9 +154,10 @@ int main(int argc, char *argv[]) {
 	mpd_search_commit(mpd);
 
 	while (song = mpd_recv_song(mpd)) {
-		format_song(fmt, song);
+		const char *uri = mpd_song_get_uri(song);
+		list_insert_tail(songs_list, strdup(uri));
 
-		list_insert_tail(songs_list, strdup(mpd_song_get_uri(song)));
+		format_song(fmt, song);
 
 		mpd_song_free(song);
 	}

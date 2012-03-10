@@ -163,7 +163,7 @@ int main(int argc, char *argv[]) {
 		mpd_search_commit(mpd);
 	}
 
-	while (song = mpd_recv_song(mpd)) {
+	while ((song = mpd_recv_song(mpd))) {
 		const char *uri = mpd_song_get_uri(song);
 		list_insert_tail(songs_list, strdup(uri));
 

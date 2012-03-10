@@ -149,11 +149,12 @@ static inline void help() {
 static void run_mpd_cmd(irc_session_t *irc, const char *p, const char *orig) {
 	char *cmd = (char *) p;
 
-	if (irc_pass)
+	if (irc_pass) {
 		if (!strncmp(cmd, irc_pass, strlen(irc_pass)))
 			cmd += strlen(irc_pass) + 1;
 		else
 			return;
+	}
 
 	if (!strncmp("play", cmd, 4)) {
 		mpd_run_play(mpd);

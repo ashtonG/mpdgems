@@ -159,6 +159,8 @@ int main(int argc, char *argv[]) {
 			putchar(*fmt_copy);
 			fmt_copy++;
 		}
+
+		mpd_song_free(song);
 	}
 
 	mpd_response_finish(mpd);

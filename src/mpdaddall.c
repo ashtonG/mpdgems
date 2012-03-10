@@ -52,9 +52,11 @@ static inline void help();
 static inline list_node_t *list_init();
 static inline list_node_t *list_head(list_node_t *l);
 static inline void list_insert_tail(list_node_t *l, void *item);
+static inline void list_remove(list_node_t *l);
+static inline bool list_is_empty(list_node_t *l);
 
-#define list_foreach(ITEM, L)	\
-	for (ITEM = list_head(L); ITEM != L; ITEM = ITEM -> next)
+#define list_foreach_safe(ITEM, SAFE, L) \
+	for (ITEM = list_head(L), SAFE = ITEM -> next; ITEM != L; ITEM = SAFE, SAFE = ITEM -> next)
 
 #define CHECK_MPD_CONN(mpd)	\
 	assert(mpd_connection_get_error(mpd) == MPD_ERROR_SUCCESS);
@@ -73,7 +75,7 @@ int main(int argc, char *argv[]) {
 	struct mpd_song *song = NULL;
 	struct mpd_connection *mpd = NULL;
 
-	list_node_t *songs_list = list_init(), *iter;
+	list_node_t *songs_list = list_init(), *iter, *safe;
 
 	char *mpd_addr = getenv("MPD_HOST");
 	int   mpd_port = getenv("MPD_PORT") ? atoi(getenv("MPD_PORT")) : 0;
@@ -107,14 +109,18 @@ int main(int argc, char *argv[]) {
 
 	mpd_response_finish(mpd);
 
-	list_foreach(iter, songs_list) {
+	list_foreach_safe(iter, safe, songs_list) {
 		char *uri = iter -> value;
 
 		mpd_run_add(mpd, uri);
 		CHECK_MPD_CONN(mpd);
+
+		free(uri);
+		list_remove(iter);
 	}
 
 	mpd_connection_free(mpd);
+	free(songs_list);
 
 	return 0;
 }
@@ -145,6 +151,13 @@ static inline list_node_t *list_init() {
 	return t;
 }
 
+static inline bool list_is_empty(list_node_t *l) {
+	if (l == NULL || l == l -> next)
+		return true;
+
+	return false;
+}
+
 static inline list_node_t *list_head(list_node_t *l) {
 	return l -> next;
 }
@@ -159,4 +172,12 @@ static inline void list_insert_tail(list_node_t *l, void *item) {
 	t -> prev -> next = t;
 
 	l -> prev = t;
+}
+
+static inline void list_remove(list_node_t *l) {
+	l -> prev -> next = l -> next;
+	l -> next -> prev = l -> prev;
+
+	if (!list_is_empty(l))
+		free(l);
 }

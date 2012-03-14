@@ -94,8 +94,6 @@ int main(int argc, char *argv[]) {
 	else
 		mpd_send_list_queue_meta(mpd);
 
-	mpd_send_list_all_meta(mpd, "/");
-
 	while ((song = mpd_recv_song(mpd))) {
 		tot += mpd_song_get_duration(song);
 

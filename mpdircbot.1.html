@@ -57,6 +57,7 @@
     <a href="#SYNOPSIS">SYNOPSIS</a>
     <a href="#DESCRIPTION">DESCRIPTION</a>
     <a href="#OPTIONS">OPTIONS</a>
+    <a href="#COMMANDS">COMMANDS</a>
     <a href="#ENVIRONMENT">ENVIRONMENT</a>
     <a href="#AUTHOR">AUTHOR</a>
     <a href="#COPYRIGHT">COPYRIGHT</a>
@@ -80,35 +81,8 @@
 <h2 id="DESCRIPTION">DESCRIPTION</h2>
 
 <p><strong>mpdircbot</strong> is a simple IRC bot that listens to private and channel
-messages and controls the MPD playback accordingly.</p>
-
-<p>It recognizes the following commands:</p>
-
-<ul>
-<li><code>play</code></li>
-<li><code>pause</code></li>
-<li><code>toggle</code></li>
-<li><code>stop</code></li>
-<li><code>prev</code></li>
-<li><code>next</code></li>
-</ul>
-
-
-<p>If a password has been defined with the <code>--bot-secret</code> option, all the commands
-have to be prepended with that password, i.e. "<var>pass</var> <var>command</var>".</p>
-
-<p>If invited in a channel, <strong>mpdircbot</strong> will join it and respond to commands
-sent trough the channel itself, so that everyone in the channel can control
-the MPD playback. To accept commands from a channel the mpdircbot nick has to
-be prepended to the command itself, e.g.:</p>
-
-<ul>
-<li><code>mpdircbot, play</code></li>
-<li><code>mpdircbot, pause</code></li>
-<li><code>mpdircbot, toggle</code></li>
-<li>...</li>
-</ul>
-
+messages and controls the MPD playback accordingly. See <a href="#COMMANDS" title="COMMANDS" data-bare-link="true">COMMANDS</a> for the
+complete list of recognized commands.</p>
 
 <h2 id="OPTIONS">OPTIONS</h2>
 
@@ -137,7 +111,7 @@ The IRC server address (default <code>irc.freenode.net</code>).</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 The IRC server port (default <code>6667</code>).</p>
 
-<p><code>-N, --nick</code></p>
+<p><code>-N, --bot-nick</code></p>
 
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 The IRC nick for the bot (default <code>mpdircbot</code>).</p>
@@ -151,6 +125,38 @@ The password to access the bot (none by default).</p>
 
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Show the help message.</p>
+
+<h2 id="COMMANDS">COMMANDS</h2>
+
+<p>The supported commands are:</p>
+
+<p><code>play</code> starts the playback.</p>
+
+<p><code>pause</code> pauses the playback.</p>
+
+<p><code>toggle</code> toggles the playback.</p>
+
+<p><code>stop</code> stops the playback.</p>
+
+<p><code>prev</code> skips to the previous song.</p>
+
+<p><code>next</code> skips to the next song.</p>
+
+<p>If a password has been defined with the <code>--bot-secret</code> option, all the
+commands have to be prepended with that password, i.e. "<var>pass</var> <var>command</var>".</p>
+
+<p>If invited in a channel the bot will join it and listen to commands sent
+trough that channel too, so that everyone in the channel can control MPD. To
+accept commands from a channel the mpdircbot nick has to be prepended to the
+command itself, e.g.:</p>
+
+<p><code>mpdircbot, play</code></p>
+
+<p><code>mpdircbot, pause</code></p>
+
+<p><code>mpdircbot, toggle</code></p>
+
+<p><code>...</code></p>
 
 <h2 id="ENVIRONMENT">ENVIRONMENT</h2>
 
@@ -166,18 +172,18 @@ The MPD server port (overridden by <code>--port</code>).</p>
 
 <h2 id="AUTHOR">AUTHOR</h2>
 
-<p>Alessandro Ghedini <a href="&#109;&#97;&#x69;&#108;&#x74;&#x6f;&#58;&#x61;&#108;&#x33;&#x78;&#98;&#x69;&#x6f;&#64;&#103;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#x6f;&#x6d;" data-bare-link="true">&#97;&#108;&#51;&#x78;&#x62;&#105;&#111;&#64;&#103;&#109;&#97;&#105;&#x6c;&#46;&#x63;&#x6f;&#x6d;</a></p>
+<p>Alessandro Ghedini <a href="&#109;&#97;&#x69;&#108;&#x74;&#x6f;&#58;&#x61;&#x6c;&#51;&#120;&#98;&#x69;&#x6f;&#64;&#103;&#109;&#97;&#105;&#x6c;&#x2e;&#x63;&#111;&#x6d;" data-bare-link="true">&#x61;&#x6c;&#51;&#120;&#x62;&#105;&#x6f;&#x40;&#x67;&#109;&#x61;&#105;&#108;&#46;&#x63;&#x6f;&#109;</a></p>
 
 <h2 id="COPYRIGHT">COPYRIGHT</h2>
 
-<p>Copyright (C) 2012 Alessandro Ghedini <a href="&#109;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#97;&#x6c;&#x33;&#x78;&#x62;&#105;&#111;&#x40;&#103;&#109;&#97;&#x69;&#x6c;&#x2e;&#x63;&#x6f;&#x6d;" data-bare-link="true">&#x61;&#x6c;&#51;&#x78;&#98;&#105;&#x6f;&#x40;&#x67;&#109;&#x61;&#x69;&#x6c;&#46;&#x63;&#111;&#x6d;</a></p>
+<p>Copyright (C) 2012 Alessandro Ghedini <a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#x61;&#x6c;&#51;&#x78;&#x62;&#105;&#111;&#64;&#x67;&#109;&#97;&#x69;&#x6c;&#x2e;&#99;&#111;&#109;" data-bare-link="true">&#97;&#108;&#51;&#120;&#98;&#x69;&#111;&#x40;&#103;&#x6d;&#97;&#x69;&#x6c;&#46;&#99;&#111;&#109;</a></p>
 
 <p>This program is released under the 3 clause BSD license.</p>
 
 
   <ol class='man-decor man-foot man foot'>
     <li class='tl'></li>
-    <li class='tc'>February 2012</li>
+    <li class='tc'>March 2012</li>
     <li class='tr'>mpdircbot(1)</li>
   </ol>
 

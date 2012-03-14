@@ -10,12 +10,15 @@ mpdmmkeys(1) -- control MPD playback via the X11 multimedia keys
 **mpdmmkeys** is a simple daemon that listens to multimedia keys events and
 controls MPD playback accordingly.
 
-Currently the following keys are grabbed:
+The supported multimedia keys are:
 
- * `XF86AudioPlay`
- * `XF86AudioStop`
- * `XF86AudioPrev`
- * `XF86AudioNext`
+`XF86AudioPlay` toggles the playback.
+
+`XF86AudioStop` stops the playback
+
+`XF86AudioPrev` skips to the previous song.
+
+`XF86AudioNext` skips to the next song.
 
 ## OPTIONS ##
 

@@ -10,13 +10,13 @@
 \fBmpdlength [OPTIONS]\fR
 .
 .SH "DESCRIPTION"
-\fBmpdlength\fR is a simple utility that prints to \fBSTDOUT\fR the total length of the current playlist or of the whole databse\. The output format is configurable\.
+\fBmpdlength\fR is a simple utility that prints the total length of the current playlist or of the whole database\. The output format is customizable\.
 .
 .SH "OPTIONS"
 \fB\-f, \-\-format\fR
 .
 .P
-\~\~\~\~\~\~ The output format string\. \fB%d\fR is replaced by the number of days, \fB%h\fR by the number of hours, \fB%m\fR by the number of minutes and \fB%s\fR by the number of seconds\. Example: \fB%d days, %h hours, %m mins and %s secs\fR
+\~\~\~\~\~\~ The output format string\. See \fIFORMAT\fR for more info\.
 .
 .P
 \fB\-d, \-\-db\fR
@@ -47,6 +47,24 @@
 .
 .P
 \~\~\~\~\~\~ Show the help message\.
+.
+.SH "FORMAT"
+The interpreted sequences in the format string are:
+.
+.P
+\fB%d\fR is replaced by the number of days\.
+.
+.P
+\fB%h\fR is replaced by the number of hours\.
+.
+.P
+\fB%m\fR is replaced by the number of minutes\.
+.
+.P
+\fB%s\fR is replaced by the number of seconds\.
+.
+.P
+Example: \fB%d days, %h hours, %m mins and %s secs\fR
 .
 .SH "ENVIRONMENT"
 \fBMPD_HOST\fR

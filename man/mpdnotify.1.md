@@ -7,8 +7,9 @@ mpdnotify(1) -- stupid desktop notifier for MPD
 
 ## DESCRIPTION
 
-**mpdnotify** is a simple daemon that polls the MPD server for song changes, and
-shows a nice desktop notification when that happens.
+**mpdnotify** is a simple daemon that shows a desktop notification when the
+song that MPD is playing changes. It can also optionally show the album
+cover art if the music database is located on the local system.
 
 ## OPTIONS ##
 
@@ -25,7 +26,7 @@ The cover file name (default `cover.jpg`).
 `-C, --nocover`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Do not use the album's cover image in the notifications.
+Do not insert the cover images in the notifications.
 
 `-a, --addr`
 

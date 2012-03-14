@@ -7,11 +7,8 @@ mpdplayby(1) -- play a song that matches the given tags
 
 ## DESCRIPTION
 
-**mpdplayby** is a simple utility that, given some information about a song
-(i.e. title, artist and album), plays the matching entry in the current playlist.
-
-Not all the tags are mandatory (e.g. you can only provide the title), and if
-multiple matches are found, only the first one is played.
+**mpdplayby** is a simple utility that plays the first song that matches the
+given parameters (e.g. artist, album, ...).
 
 ## OPTIONS ##
 

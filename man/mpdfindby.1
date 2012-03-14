@@ -10,10 +10,7 @@
 \fBmpdfindby [OPTIONS]\fR
 .
 .SH "DESCRIPTION"
-\fBmpdfindby\fR is a simple utility that, given some information about some songs (i\.e\. title, artist and album), prints to \fBSTDOUT\fR the matching entries in the current playlist or in the whole database\. The output format is configurable\.
-.
-.P
-Optionally a new playlist can be created out of the matching songs\.
+\fBmpdfindby\fR is a simple utility that searches for and prints the songs that match the given paramenters (e\.g\. artist, album, \.\.\.)\. It can search in the current playlist or in the whole database, and the output format can be customized\. Optionally a new playlist can be created out of the matching songs\.
 .
 .SH "OPTIONS"
 \fB\-A, \-\-all\fR
@@ -43,7 +40,7 @@ Optionally a new playlist can be created out of the matching songs\.
 \fB\-f, \-\-format\fR
 .
 .P
-\~\~\~\~\~\~ The output format string\. \fB%t\fR is replaced by the song title, \fB%r\fR by the song artist, \fB%b\fR by the song album, \fB%k\fR by the song number, \fB%d\fR by the song date and \fB%g\fR by the song genre\. Escaped new lines (\fB\en\fR) are also supported\. Example: \fBtitle: %t\enartist: %r\enalbum: %b\en\en\fR\.
+\~\~\~\~\~\~ The output format string\. See \fIFORMAT\fR for more info\.
 .
 .P
 \fB\-d, \-\-db\fR
@@ -86,6 +83,33 @@ Optionally a new playlist can be created out of the matching songs\.
 .
 .P
 \~\~\~\~\~\~ Show the help message\.
+.
+.SH "FORMAT"
+The interpreted sequences in the format string are:
+.
+.P
+\fB%t\fR is replaced by the song title\.
+.
+.P
+\fB%r\fR is replaced by the song artist\.
+.
+.P
+\fB%b\fR is replaced by the song album\.
+.
+.P
+\fB%k\fR is replaced by the song number\.
+.
+.P
+\fB%d\fR is replaced by the song date
+.
+.P
+\fB%g\fR is replaced by the song genre\.
+.
+.P
+Escaped new lines (\fB\en\fR) are also supported\.
+.
+.P
+Example: \fBtitle: %t\enartist: %r\enalbum: %b\en\en\fR\.
 .
 .SH "ENVIRONMENT"
 \fBMPD_HOST\fR

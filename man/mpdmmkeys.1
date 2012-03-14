@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "MPDMMKEYS" "1" "February 2012" "" ""
+.TH "MPDMMKEYS" "1" "March 2012" "" ""
 .
 .SH "NAME"
 \fBmpdmmkeys\fR \- control MPD playback via the X11 multimedia keys
@@ -13,21 +13,19 @@
 \fBmpdmmkeys\fR is a simple daemon that listens to multimedia keys events and controls MPD playback accordingly\.
 .
 .P
-Currently the following keys are grabbed:
+The supported multimedia keys are:
 .
-.IP "\(bu" 4
-\fBXF86AudioPlay\fR
+.P
+\fBXF86AudioPlay\fR toggles the playback\.
 .
-.IP "\(bu" 4
-\fBXF86AudioStop\fR
+.P
+\fBXF86AudioStop\fR stops the playback
 .
-.IP "\(bu" 4
-\fBXF86AudioPrev\fR
+.P
+\fBXF86AudioPrev\fR skips to the previous song\.
 .
-.IP "\(bu" 4
-\fBXF86AudioNext\fR
-.
-.IP "" 0
+.P
+\fBXF86AudioNext\fR skips to the next song\.
 .
 .SH "OPTIONS"
 \fB\-a, \-\-addr\fR

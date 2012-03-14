@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "MPDIRCBOT" "1" "February 2012" "" ""
+.TH "MPDIRCBOT" "1" "March 2012" "" ""
 .
 .SH "NAME"
 \fBmpdircbot\fR \- control MPD playback through an IRC bot
@@ -10,47 +10,7 @@
 \fBmpdircbot [OPTIONS]\fR
 .
 .SH "DESCRIPTION"
-\fBmpdircbot\fR is a simple IRC bot that listens to private and channel messages and controls the MPD playback accordingly\.
-.
-.P
-It recognizes the following commands:
-.
-.IP "\(bu" 4
-\fBplay\fR
-.
-.IP "\(bu" 4
-\fBpause\fR
-.
-.IP "\(bu" 4
-\fBtoggle\fR
-.
-.IP "\(bu" 4
-\fBstop\fR
-.
-.IP "\(bu" 4
-\fBprev\fR
-.
-.IP "\(bu" 4
-\fBnext\fR
-.
-.IP "" 0
-.
-.P
-If invited in a channel, \fBmpdircbot\fR will join it and respond to commands sent trough the channel itself, so that everyone in the channel can control the MPD playback\. To accept commands from a channel the mpdircbot nick has to be prepended to the command itself, e\.g\.:
-.
-.IP "\(bu" 4
-\fBmpdircbot, play\fR
-.
-.IP "\(bu" 4
-\fBmpdircbot, pause\fR
-.
-.IP "\(bu" 4
-\fBmpdircbot, toggle\fR
-.
-.IP "\(bu" 4
-\&\.\.\.
-.
-.IP "" 0
+\fBmpdircbot\fR is a simple IRC bot that listens to private and channel messages and controls the MPD playback accordingly\. See \fICOMMANDS\fR for the complete list of recognized commands\.
 .
 .SH "OPTIONS"
 \fB\-a, \-\-addr\fR
@@ -83,16 +43,61 @@ If invited in a channel, \fBmpdircbot\fR will join it and respond to commands se
 \~\~\~\~\~\~ The IRC server port (default \fB6667\fR)\.
 .
 .P
-\fB\-N, \-\-nick\fR
+\fB\-N, \-\-bot\-nick\fR
 .
 .P
 \~\~\~\~\~\~ The IRC nick for the bot (default \fBmpdircbot\fR)\.
+.
+.P
+\fB\-S, \-\-bot\-secret\fR
+.
+.P
+\~\~\~\~\~\~ The password to access the bot (none by default)\.
 .
 .P
 \fB\-h, \-\-help\fR
 .
 .P
 \~\~\~\~\~\~ Show the help message\.
+.
+.SH "COMMANDS"
+The supported commands are:
+.
+.P
+\fBplay\fR starts the playback\.
+.
+.P
+\fBpause\fR pauses the playback\.
+.
+.P
+\fBtoggle\fR toggles the playback\.
+.
+.P
+\fBstop\fR stops the playback\.
+.
+.P
+\fBprev\fR skips to the previous song\.
+.
+.P
+\fBnext\fR skips to the next song\.
+.
+.P
+If a password has been defined with the \fB\-\-bot\-secret\fR option, all the commands have to be prepended with that password, i\.e\. "\fIpass\fR \fIcommand\fR"\.
+.
+.P
+If invited in a channel the bot will join it and listen to commands sent trough that channel too, so that everyone in the channel can control MPD\. To accept commands from a channel the mpdircbot nick has to be prepended to the command itself, e\.g\.:
+.
+.P
+\fBmpdircbot, play\fR
+.
+.P
+\fBmpdircbot, pause\fR
+.
+.P
+\fBmpdircbot, toggle\fR
+.
+.P
+\fB\.\.\.\fR
 .
 .SH "ENVIRONMENT"
 \fBMPD_HOST\fR

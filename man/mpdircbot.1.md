@@ -8,29 +8,8 @@ mpdircbot(1) -- control MPD playback through an IRC bot
 ## DESCRIPTION
 
 **mpdircbot** is a simple IRC bot that listens to private and channel
-messages and controls the MPD playback accordingly.
-
-It recognizes the following commands:
-
- * `play`
- * `pause`
- * `toggle`
- * `stop`
- * `prev`
- * `next`
-
-If a password has been defined with the `--bot-secret` option, all the commands
-have to be prepended with that password, i.e. "<pass> <command>".
-
-If invited in a channel, **mpdircbot** will join it and respond to commands
-sent trough the channel itself, so that everyone in the channel can control
-the MPD playback. To accept commands from a channel the mpdircbot nick has to
-be prepended to the command itself, e.g.:
-
- * `mpdircbot, play`
- * `mpdircbot, pause`
- * `mpdircbot, toggle`
- * ...
+messages and controls the MPD playback accordingly. See [COMMANDS][] for the
+complete list of recognized commands.
 
 ## OPTIONS ##
 
@@ -59,7 +38,7 @@ The IRC server address (default `irc.freenode.net`).
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 The IRC server port (default `6667`).
 
-`-N, --nick`
+`-N, --bot-nick`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 The IRC nick for the bot (default `mpdircbot`).
@@ -73,6 +52,38 @@ The password to access the bot (none by default).
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Show the help message.
+
+## COMMANDS ##
+
+The supported commands are:
+
+`play` starts the playback.
+
+`pause` pauses the playback.
+
+`toggle` toggles the playback.
+
+`stop` stops the playback.
+
+`prev` skips to the previous song.
+
+`next` skips to the next song.
+
+If a password has been defined with the `--bot-secret` option, all the
+commands have to be prepended with that password, i.e. "<pass> <command>".
+
+If invited in a channel the bot will join it and listen to commands sent
+trough that channel too, so that everyone in the channel can control MPD. To
+accept commands from a channel the mpdircbot nick has to be prepended to the
+command itself, e.g.:
+
+`mpdircbot, play`
+
+`mpdircbot, pause`
+
+`mpdircbot, toggle`
+
+`...`
 
 ## ENVIRONMENT ##
 

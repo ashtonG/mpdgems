@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
 		{ "irc-addr",	required_argument,	0, 'A' },
 		{ "irc-port",	required_argument,	0, 'P' },
 		{ "bot-secret",	required_argument,	0, 'S' },
-		{ "nick",	required_argument,	0, 'N' },
+		{ "bot-nick",	required_argument,	0, 'N' },
 		{ "help",	no_argument,		0, 'h' },
 		{ 0,		0,			0,  0  }
 	};
@@ -140,7 +140,7 @@ static inline void help() {
 	CMD_HELP("--irc-addr",	"-A",	"The IRC server address");
 	CMD_HELP("--irc-port",	"-P",	"The IRC server port");
 	CMD_HELP("--bot-secret","-S",	"The password to access the bot");
-	CMD_HELP("--nick",	"-N",	"The IRC nick for the bot");
+	CMD_HELP("--bot-nick",	"-N",	"The IRC nick for the bot");
 	CMD_HELP("--help",	"-h",	"Show this help");
 
 	puts("");

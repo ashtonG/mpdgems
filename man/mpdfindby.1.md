@@ -7,11 +7,11 @@ mpdfindby(1) -- find and print matching songs
 
 ## DESCRIPTION
 
-**mpdfindby** is a simple utility that, given some information about some songs
-(i.e. title, artist and album), prints to `STDOUT` the matching entries in the
-current playlist or in the whole database. The output format is configurable.
-
-Optionally a new playlist can be created out of the matching songs.
+**mpdfindby** is a simple utility that searches for and prints the songs
+that match the given paramenters (e.g. artist, album, ...). It can search
+in the current playlist or in the whole database, and the output format can
+be customized. Optionally a new playlist can be created out of the matching
+songs.
 
 ## OPTIONS ##
 
@@ -38,10 +38,7 @@ The song album.
 `-f, --format`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-The output format string. `%t` is replaced by the song title, `%r` by the song
-artist, `%b` by the song album, `%k` by the song number, `%d` by the song date
-and `%g` by the song genre. Escaped new lines (`\n`) are also supported.
-Example: `title: %t\nartist: %r\nalbum: %b\n\n`.
+The output format string.  See [FORMAT][] for more info.
 
 `-d, --db`
 
@@ -77,6 +74,26 @@ The MPD password.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Show the help message.
+
+## FORMAT ##
+
+The interpreted sequences in the format string are:
+
+`%t` is replaced by the song title.
+
+`%r` is replaced by the song artist.
+
+`%b` is replaced by the song album.
+
+`%k` is replaced by the song number.
+
+`%d` is replaced by the song date
+
+`%g` is replaced by the song genre.
+
+Escaped new lines (`\n`) are also supported.
+
+Example: `title: %t\nartist: %r\nalbum: %b\n\n`.
 
 ## ENVIRONMENT ##
 

@@ -53,6 +53,11 @@ Search the MPD databse instead of the current playlist.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Create a playlist with the matching songs.
 
+`-k, --keep`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Do not delete the current playlist (to be used with -l).
+
 `-a, --addr`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

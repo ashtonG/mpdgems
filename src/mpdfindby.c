@@ -65,7 +65,7 @@ static inline bool list_is_empty(list_node_t *l);
 int main(int argc, char *argv[]) {
 	int opts;
 
-	const char   *short_opts  = "At:r:b:f:dla:p:s:h";
+	const char   *short_opts  = "At:r:b:f:dlka:p:s:h";
 	struct option long_opts[] = {
 		{ "all",	no_argument,		0, 'A' },
 		{ "title",	required_argument,	0, 't' },
@@ -74,6 +74,7 @@ int main(int argc, char *argv[]) {
 		{ "format",	required_argument,	0, 'f' },
 		{ "db",		no_argument,		0, 'd' },
 		{ "list",	no_argument,		0, 'l' },
+		{ "keep",	no_argument,		0, 'k' },
 		{ "addr",	required_argument,	0, 'a' },
 		{ "port",	required_argument,	0, 'p' },
 		{ "secret",	required_argument,	0, 's' },
@@ -92,6 +93,7 @@ int main(int argc, char *argv[]) {
 	int   match_all = 0;
 	int   search_db = 0;
 	int   playlist  = 0;
+	int   keep      = 0;
 
 	char *title  = NULL;
 	char *artist = NULL;
@@ -112,6 +114,7 @@ int main(int argc, char *argv[]) {
 			case 'f': { fmt = optarg;		break;     }
 			case 'd': { search_db = 1;		break;     }
 			case 'l': { playlist = 1;		break;     }
+			case 'k': { keep = 1;			break;     }
 			case 'a': { mpd_addr = optarg;		break;     }
 			case 'p': { mpd_port = atoi(optarg);	break;     }
 			case 's': { mpd_pass = optarg;		break;     }
@@ -175,7 +178,8 @@ int main(int argc, char *argv[]) {
 	mpd_response_finish(mpd);
 
 	if (playlist) {
-		mpd_run_clear(mpd);
+		if (!keep)
+			mpd_run_clear(mpd);
 
 		list_foreach_safe(iter, safe, songs_list) {
 			char *uri = iter -> value;
@@ -252,6 +256,7 @@ static inline void help() {
 	CMD_HELP("--format",	"-f",	"The output format string");
 	CMD_HELP("--db",	"-d",	"Search the MPD database instead of the current playlist");
 	CMD_HELP("--list",	"-l",	"Create a playlist with the matching songs");
+	CMD_HELP("--keep",	"-k",	"Do not delete the current playlist (to be used with -l)");
 	CMD_HELP("--addr",	"-a",	"The MPD server address");
 	CMD_HELP("--port",	"-p",	"The MPD server port");
 	CMD_HELP("--secret",	"-s",	"The MPD password");

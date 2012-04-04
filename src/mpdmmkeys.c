@@ -177,4 +177,3 @@ static inline void x11_handle_key(Display *dpy, XEvent ev, struct mpd_connection
 
 	XAllowEvents(dpy, AsyncKeyboard, ev.xkey.time);
 }
-

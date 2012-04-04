@@ -70,6 +70,11 @@ The MPD server port.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 The MPD password.
 
+`-q, --quiet`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Silence the output.
+
 `-h, --help`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

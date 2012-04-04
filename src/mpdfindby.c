@@ -65,7 +65,7 @@ static inline bool list_is_empty(list_node_t *l);
 int main(int argc, char *argv[]) {
 	int opts;
 
-	const char   *short_opts  = "At:r:b:f:dlka:p:s:h";
+	const char   *short_opts  = "At:r:b:f:dlka:p:s:qh";
 	struct option long_opts[] = {
 		{ "all",	no_argument,		0, 'A' },
 		{ "title",	required_argument,	0, 't' },
@@ -78,6 +78,7 @@ int main(int argc, char *argv[]) {
 		{ "addr",	required_argument,	0, 'a' },
 		{ "port",	required_argument,	0, 'p' },
 		{ "secret",	required_argument,	0, 's' },
+		{ "quit",	no_argument,		0, 'q' },
 		{ "help",	no_argument,		0, 'h' },
 		{ 0,		0,			0,  0  }
 	};
@@ -94,6 +95,7 @@ int main(int argc, char *argv[]) {
 	int   search_db = 0;
 	int   playlist  = 0;
 	int   keep      = 0;
+	int   quiet     = 0;
 
 	char *title  = NULL;
 	char *artist = NULL;
@@ -118,6 +120,7 @@ int main(int argc, char *argv[]) {
 			case 'a': { mpd_addr = optarg;		break;     }
 			case 'p': { mpd_port = atoi(optarg);	break;     }
 			case 's': { mpd_pass = optarg;		break;     }
+			case 'h': { quiet    = 1;		break;     }
 			default :
 			case 'h': { help();			return -1; }
 		}
@@ -170,7 +173,7 @@ int main(int argc, char *argv[]) {
 		const char *uri = mpd_song_get_uri(song);
 		list_insert_tail(songs_list, strdup(uri));
 
-		format_song(fmt, song);
+		if (!quiet) format_song(fmt, song);
 
 		mpd_song_free(song);
 	}
@@ -260,6 +263,7 @@ static inline void help() {
 	CMD_HELP("--addr",	"-a",	"The MPD server address");
 	CMD_HELP("--port",	"-p",	"The MPD server port");
 	CMD_HELP("--secret",	"-s",	"The MPD password");
+	CMD_HELP("--quiet",	"-q",	"Silence the output");
 	CMD_HELP("--help",	"-h",	"Show this help");
 
 	puts("");

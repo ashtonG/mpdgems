@@ -120,7 +120,7 @@ int main(int argc, char *argv[]) {
 			case 'a': { mpd_addr = optarg;		break;     }
 			case 'p': { mpd_port = atoi(optarg);	break;     }
 			case 's': { mpd_pass = optarg;		break;     }
-			case 'h': { quiet    = 1;		break;     }
+			case 'q': { quiet    = 1;		break;     }
 			default :
 			case 'h': { help();			return -1; }
 		}

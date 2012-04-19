@@ -1,0 +1,20 @@
+language: perl
+
+install:
+ - sudo apt-get install cmake libmpdclient-dev
+ - sudo apt-get install libircclient-dev
+ - sudo apt-get install libnotify-dev
+ - sudo apt-get install libx11-dev
+
+before_script:
+ - cmake .
+
+script:
+ - make
+
+notifications:
+  recipient:
+   - al3xbio@gmail.com
+  email:
+    on_success: change
+    on_failure: always

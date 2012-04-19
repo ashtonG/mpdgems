@@ -1,6 +1,8 @@
 mpdgems
 =======
 
+![Travis CI](https://secure.travis-ci.org/AlexBio/mpdgems.png)
+
 **mpdgems** is a collection of some more or less useful tools for MPD (the
 Music Player Daemon) intended to be used from the command line or in the background.
 

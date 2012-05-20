@@ -190,9 +190,31 @@ static void notify(NotifyNotification *n, struct mpd_song *song) {
 		sprintf(cover, "%s/%s/%s", music_dir, dir, cover_file);
 
 		if (!stat(cover, &sb) && S_ISREG(sb.st_mode)) {
-			GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file(cover, NULL);
-			notify_notification_set_image_from_pixbuf(n, pixbuf);
-			gdk_pixbuf_unref(pixbuf);
+			GdkPixbuf *scaled = NULL;
+			GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file(
+				cover, NULL
+			);
+
+			char *template = "/tmp/mpdnotify.XXXXXX";
+			char *tmpfile  = malloc(strlen(template) + 1);
+			tmpfile        = strcpy(tmpfile, template);
+			mkstemp(tmpfile);
+
+			scaled = gdk_pixbuf_scale_simple(
+				pixbuf, 50, 50, GDK_INTERP_HYPER
+			);
+
+			gdk_pixbuf_save(scaled, tmpfile, "jpeg", NULL, NULL);
+
+			g_object_unref(pixbuf);
+			g_object_unref(scaled);
+
+			notify_notification_update(n, title, body, tmpfile);
+			notify_notification_show(n, NULL);
+
+			unlink(tmpfile);
+
+			return;
 		}
 	}
 
